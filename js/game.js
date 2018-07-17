@@ -27,19 +27,18 @@ class Gem {
 	constructor (x, y){
 		this.X = CONERMARGIN + x * titleSize;
 		this.Y = CONERMARGIN + y * titleSize;
+		this.Count = 0;
+		this.Kind = getRandomGem(gemMinNum, gemMaxNum);
 		this.NeedX = this.X;
 		this.NeedY = CONERMARGIN + y * titleSize;
-		this.Kind = getRandomGem(gemMinNum, gemMaxNum);
 		this.Img = figureId[this.Kind];
 		this.Col = x;
 		this.Row = y;
-		this.Count = false;
 		this.Swaped = false;
 		this.Selected = false;
 	}
 
 }
-
 
 function GameGridCreate(){
   GameGrid = new Array(gameGridSize);
@@ -56,14 +55,13 @@ function GameGridCreate(){
 function InitializationGame(){
 	GameGridCreate();
 	draw();
+	FindMatches();
 }
 
 
 function getRandomGem(min, max) {
 	return Math.floor(Math.random() * (max - min) + min);
 }
-
-
 
 function draw() {
 	ctx.drawImage(bg, CONERMARGIN, CONERMARGIN);
@@ -74,3 +72,26 @@ function draw() {
 		}
 }
 
+function FindMatches(){
+	for(let i = 0; i <= gameGridSize - 1; i++){
+		for (let j = 0; j <= gameGridSize - 1 ; j++){
+			if (i !== 0 && i !== gameGridSize - 1 &&
+				GameGrid[i][j].Kind !== 5 &&
+				GameGrid[i][j].Kind === GameGrid[i + 1][j].Kind &&
+				GameGrid[i][j].Kind === GameGrid[i - 1][j].Kind ){
+				for (let n = -1; n <= 1; n++){
+					GameGrid[i + n][j].Count+= 1;
+				}
+			}
+
+			if (j !== 0 && j !== gameGridSize - 1 &&
+				GameGrid[i][j].Kind !== 5 &&
+				GameGrid[i][j].Kind === GameGrid[i][j + 1].Kind &&
+				GameGrid[i][j].Kind === GameGrid[i][j - 1].Kind ){
+				for (let n = -1; n <= 1; n++){
+					GameGrid[i][j + n].Count+= 1;
+				}
+			}
+		}
+	}
+}
