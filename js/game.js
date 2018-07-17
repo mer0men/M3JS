@@ -33,6 +33,7 @@ class Gem {
 		this.Img = figureId[this.Kind];
 		this.Col = x;
 		this.Row = y;
+		this.Count = false;
 		this.Swaped = false;
 		this.Selected = false;
 	}
