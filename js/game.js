@@ -28,7 +28,7 @@ function draw() {
 	ctx.drawImage(bg, 0, 0);
 
 	for (let i = 0; i < gameGrid; i++) 
-		for (let j = 0; j < gameGrid - 1; j++) {
+		for (let j = 0; j < gameGrid; j++) {
 			ctx.drawImage(figureId[getRandomGem(gemMinNum, gemMaxNum)], i * titleSize, j * titleSize);
 		}
 }
