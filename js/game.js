@@ -1,37 +1,13 @@
-var cvs = document.getElementById("canvas");
-var ctx = cvs.getContext("2d");
-
-var bg = new Image();
-var gemTriangle = new Image();
-var gemHexagon = new Image();
-var gemOctagon = new Image();
-var gemRectangle = new Image();
-var gemStar = new Image();
-var GameGrid;
-
-bg.src = "img/bg.jpg";
-gemTriangle.src = "img/gem1.png";
-gemHexagon.src = "img/gem2.png";
-gemOctagon.src = "img/gem3.png";
-gemRectangle.src = "img/gem4.png";
-gemStar.src = "img/gem5.png";
-
-const figureId = [gemTriangle, gemHexagon, gemOctagon, gemRectangle, gemStar];
-const gameGridSize = 8;
-const gemMinNum = 0, gemMaxNum = 5;
-const titleSize = 64;
-const CONERMARGIN = 24;
-
 class Gem {
 
 	constructor (x, y){
-		this.X = CONERMARGIN + x * titleSize;
-		this.Y = CONERMARGIN + y * titleSize;
+		this.X = CONER_MARGIN + x * TITLE_SIZE;
+		this.Y = CONER_MARGIN + y * TITLE_SIZE;
 		this.Count = 0;
-		this.Kind = getRandomGem(gemMinNum, gemMaxNum);
+		this.Kind = getRandomGem(GEM_MINNUM, GEM_MAXNUM);
 		this.NeedX = this.X;
-		this.NeedY = CONERMARGIN + y * titleSize;
-		this.Img = figureId[this.Kind];
+		this.NeedY = CONER_MARGIN + y * TITLE_SIZE;
+		this.Img = FIGURE_ID[this.Kind];
 		this.Col = x;
 		this.Row = y;
 		this.Swaped = false;
@@ -41,13 +17,13 @@ class Gem {
 }
 
 function GameGridCreate(){
-  GameGrid = new Array(gameGridSize);
+  GameGrid = new Array(GAME_GRIDSIZE);
   for (let i = 0; i < GameGrid.length; i++) {
-  	GameGrid[i] = new Array(gameGridSize)
+  	GameGrid[i] = new Array(GAME_GRIDSIZE)
   } 
 
-  for(let i = 0; i< gameGridSize; i++)
-  	for(let j = 0; j< gameGridSize; j++){  		
+  for(let i = 0; i< GAME_GRIDSIZE; i++)
+  	for(let j = 0; j< GAME_GRIDSIZE; j++){  		
   		GameGrid[i][j] = new Gem(j, i);
   	} 
 }
@@ -64,18 +40,18 @@ function getRandomGem(min, max) {
 }
 
 function draw() {
-	ctx.drawImage(bg, CONERMARGIN, CONERMARGIN);
+	ctx.drawImage(bg, CONER_MARGIN, CONER_MARGIN);
 
-	for (let i = 0; i < gameGridSize; i++) 
-		for (let j = 0; j < gameGridSize; j++) {
+	for (let i = 0; i < GAME_GRIDSIZE; i++) 
+		for (let j = 0; j < GAME_GRIDSIZE; j++) {
 			ctx.drawImage(GameGrid[i][j].Img, GameGrid[i][j].X, GameGrid[i][j].Y);
 		}
 }
 
 function FindMatches(){
-	for(let i = 0; i <= gameGridSize - 1; i++){
-		for (let j = 0; j <= gameGridSize - 1 ; j++){
-			if (i !== 0 && i !== gameGridSize - 1 &&
+	for(let i = 0; i <= GAME_GRIDSIZE - 1; i++){
+		for (let j = 0; j <= GAME_GRIDSIZE - 1 ; j++){
+			if (i !== 0 && i !== GAME_GRIDSIZE - 1 &&
 				GameGrid[i][j].Kind !== 5 &&
 				GameGrid[i][j].Kind === GameGrid[i + 1][j].Kind &&
 				GameGrid[i][j].Kind === GameGrid[i - 1][j].Kind ){
@@ -84,7 +60,7 @@ function FindMatches(){
 				}
 			}
 
-			if (j !== 0 && j !== gameGridSize - 1 &&
+			if (j !== 0 && j !== GAME_GRIDSIZE - 1 &&
 				GameGrid[i][j].Kind !== 5 &&
 				GameGrid[i][j].Kind === GameGrid[i][j + 1].Kind &&
 				GameGrid[i][j].Kind === GameGrid[i][j - 1].Kind ){
