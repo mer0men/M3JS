@@ -5,10 +5,10 @@
 2) Пысин Юрий(Meromen)
 
 # Goals of projects:
-1)Create gameplay engine:
-..*Drawing gameGrid
-..*Simple animation
-..*Add bonus-gems
-2)Level editor
-3)Create shop with customization of gems && wallpapers
-4)Writing originally soundtracks for game
+1) Create gameplay engine:
+  * Drawing gameGrid
+  * Simple animation
+  * Add bonus-gems
+2) Level editor
+3) Create shop with customization of gems && wallpapers
+4) Writing originally soundtracks for game
