@@ -18,7 +18,7 @@ gemStar.src = "img/gem5.png";
 const figureId = [gemTriangle, gemHexagon, gemOctagon, gemRectangle, gemStar];
 const gameGrid = 8;
 const gemMinNum = 0, gemMaxNum = 5;
-const gameGridSize = 65;
+const titleSize = 64;
 
 function getRandomGem(min, max) {
 	return Math.floor(Math.random() * (max - min) + min);
@@ -29,6 +29,6 @@ function draw() {
 
 	for (let i = 0; i < gameGrid; i++) 
 		for (let j = 0; j < gameGrid - 1; j++) {
-			ctx.drawImage(figureId[getRandomGem(gemMinNum, gemMaxNum)], i * gameGridSize, j * gameGridSize);
+			ctx.drawImage(figureId[getRandomGem(gemMinNum, gemMaxNum)], i * titleSize, j * titleSize);
 		}
 }
