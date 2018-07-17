@@ -9,6 +9,13 @@ var gemRectangle = new Image();
 var gemStar = new Image();
 var GameGrid;
 
+bg.src = "img/bg.jpg";
+gemTriangle.src = "img/gem1.png";
+gemHexagon.src = "img/gem2.png";
+gemOctagon.src = "img/gem3.png";
+gemRectangle.src = "img/gem4.png";
+gemStar.src = "img/gem5.png";
+
 const figureId = [gemTriangle, gemHexagon, gemOctagon, gemRectangle, gemStar];
 const gameGridSize = 8;
 const gemMinNum = 0, gemMaxNum = 5;
@@ -19,7 +26,7 @@ class Gem {
 
 	constructor (x, y){
 		this.X = CONERMARGIN + x * titleSize;
-		this.Y = CONERMARGIN;
+		this.Y = CONERMARGIN + y * titleSize;
 		this.NeedX = this.X;
 		this.NeedY = CONERMARGIN + y * titleSize;
 		this.Kind = getRandomGem(gemMinNum, gemMaxNum);
@@ -40,23 +47,15 @@ function GameGridCreate(){
   } 
 
   for(let i = 0; i< gameGridSize; i++)
-  	for(let j = 0; j< gameGridSize; j++){
-  		
+  	for(let j = 0; j< gameGridSize; j++){  		
   		GameGrid[i][j] = new Gem(j, i);
-
   	} 
 }
 
-function Initialization(){
+function InitializationGame(){
 	GameGridCreate();
+	draw();
 }
-
-bg.src = "img/bg.jpg";
-gemTriangle.src = "img/gem1.png";
-gemHexagon.src = "img/gem2.png";
-gemOctagon.src = "img/gem3.png";
-gemRectangle.src = "img/gem4.png";
-gemStar.src = "img/gem5.png";
 
 
 function getRandomGem(min, max) {
@@ -66,11 +65,11 @@ function getRandomGem(min, max) {
 
 
 function draw() {
-	ctx.drawImage(bg, 0, 0);
+	ctx.drawImage(bg, CONERMARGIN, CONERMARGIN);
 
-	for (let i = 0; i < gameGrid; i++) 
-		for (let j = 0; j < gameGrid; j++) {
-			ctx.drawImage(figureId[getRandomGem(gemMinNum, gemMaxNum)], i * titleSize, j * titleSize);
+	for (let i = 0; i < gameGridSize; i++) 
+		for (let j = 0; j < gameGridSize; j++) {
+			ctx.drawImage(GameGrid[i][j].Img, GameGrid[i][j].X, GameGrid[i][j].Y);
 		}
 }
 
