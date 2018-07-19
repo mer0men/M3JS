@@ -28,7 +28,16 @@ function GameGridCreate(){
   	} 
 }
 
-function InitGame(){
+function NewGame(goal, lvl){
+    Time = 50;
+    Score = 0;
+    Timer = false;
+    IsMoving = false;
+    LVL = lvl;
+    GOAL = goal;
+    GoalLabel.textContent = "Goal: " + GOAL;
+    LvlLabel.textContent = "Lvl: " + LVL;
+
 	GameGridCreate();
 
 	Matches();
@@ -116,8 +125,8 @@ function FindCounts(){
                 suc = true;
                 tile = GameGrid[i][j];
                 tile.Kind = UNDEF_KIND;
+                ScoreUpdate(GameGrid[i][j].Count);
                 tile.Count= 0;
-                ScoreUpdate();
             }
         }
     return suc;
@@ -325,8 +334,8 @@ function NewImages(){
 }
 
 
-function ScoreUpdate(){
-    Score++;
+function ScoreUpdate(scr){
+    Score+= scr;
     ScoreBoard.textContent = "";
     ScoreBoard.textContent = "Score: " + Score;
 }

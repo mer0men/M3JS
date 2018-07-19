@@ -8,7 +8,7 @@
 		<title>Match3</title>
 
 	</head>
-	<body onload="InitGame()">
+	<body onload="NewGame(50, 1)">
 		<div id="left-Bar">
 
 		</div>	
@@ -17,14 +17,17 @@
 		</div>
 
 		<div id="right-Bar">
-			<span id="sb"> asd</span>
+			<span class="table" id="timer"> Time:</span><br>
+			<span class="table" id="sb"> asd</span><br>
+			<span class="table" id="lvl"> Lvl:</span>
+			<span class="table" id="goal"> goal:</span>
 		
 			<input type="button" onclick="soundOn()" value="On"/>
 			<input type="button" onclick="soundOff()" value="Off"/>
 		</div>>
 		<script type="text/javascript" src="js/music.js"></script>
+		<script type="text/javascript" src="js/timer.js"></script>	
 		<script type="text/javascript" src="js/variables.js"></script>
 		<script type="text/javascript" src="js/game.js"></script>	
-		<script type="text/javascript" src="js/timer.js"></script>	
 	</body>
 </html>

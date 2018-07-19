@@ -2,6 +2,9 @@
 var cvs = document.getElementById("canvas");
 var ctx = cvs.getContext("2d");
 var ScoreBoard = document.getElementById("sb");
+var	TimerLabel = document.getElementById("timer");
+var	GoalLabel = document.getElementById("goal");
+var LvlLabel = document.getElementById("lvl");
 
 
 var bg = new Image();
@@ -11,9 +14,12 @@ var gemOctagon = new Image();
 var gemRectangle = new Image();
 var gemStar = new Image();
 var GameGrid;
-var FirstSelectedTile = undefined;
 var Score = 0;
 var Timer = false;
+var IsMoving = false;
+var LVL = 1;
+var GOAL = 50;
+var Time = 60;
 
 
 
