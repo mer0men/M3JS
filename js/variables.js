@@ -13,11 +13,12 @@ var gemStar = new Image();
 var GameGrid;
 var FirstSelectedTile = undefined;
 var Score = 0;
+var Timer = false;
 
 
 
 
-bg.src = "img/bg.jpg";
+bg.src = "img1/bg.png";
 gemTriangle.src = "img/gem1.png";
 gemHexagon.src = "img/gem2.png";
 gemOctagon.src = "img/gem3.png";

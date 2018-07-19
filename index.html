@@ -4,19 +4,27 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<link rel="stylesheet" type="text/css" href="style.css">i
 		<title>Match3</title>
 
 	</head>
 	<body onload="InitGame()">
-		<canvas id="canvas" width="512" height="512"  onmousedown="MouseDown(event)"></canvas>
+		<div id="left-Bar">
+
+		</div>	
+		<div id="content">
+			<canvas id="canvas" width="512" height="512"  onmousedown="MouseDown(event)"></canvas>
+		</div>
+
+		<div id="right-Bar">
+			<span id="sb"> asd</span>
 		
-		<span id="sb"> asd</span>
-		
-		<input type="button" onclick="soundOn()" value="On"/>
-		<input type="button" onclick="soundOff()" value="Off"/>
-		
+			<input type="button" onclick="soundOn()" value="On"/>
+			<input type="button" onclick="soundOff()" value="Off"/>
+		</div>>
 		<script type="text/javascript" src="js/music.js"></script>
 		<script type="text/javascript" src="js/variables.js"></script>
-		<script type="text/javascript" src="js/game.js"></script>		
+		<script type="text/javascript" src="js/game.js"></script>	
+		<script type="text/javascript" src="js/timer.js"></script>	
 	</body>
 </html>
