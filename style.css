@@ -1,0 +1,45 @@
+#canvas{
+	padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+#sb{
+	border-width: 2px;
+	border-style: double;
+	width: auto;
+	background-color: green;
+}
+
+#content{
+  width: 26%;
+  height: 690px;
+  display: table-cell;
+  
+  vertical-align: middle;
+
+}
+
+#left-Bar{
+  width: 26%;
+  height: 690px;
+  display: table-cell;
+  
+  vertical-align: middle;
+
+
+}
+
+#right-Bar{
+  width: 26%;
+  height: 690px;
+  display: table-cell;
+  
+  vertical-align: middle;
+
+}
+body{
+	background-image: url(img1/BGN3.jpg)
+}
