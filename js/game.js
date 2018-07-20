@@ -1,5 +1,4 @@
 class Gem {
-
 	constructor (x, y){
 		this.X = CONER_MARGIN + x * TILE_SIZE;
 		this.Y = -64;
@@ -13,7 +12,6 @@ class Gem {
 		this.Swaped = false;
 		this.Selected = false;
 	}
-
 }
 
 function GameGridCreate(){
@@ -40,11 +38,8 @@ function NewGame(goal, lvl){
 
 	GameGridCreate();
 
-	Matches();
-	   
+	Matches();   
 }
-
-
 
 function Matches(){
     let suc = false;
@@ -67,9 +62,6 @@ function Matches(){
     return suc;
 }
 
-
-
-
 function getRandomGem(min, max) {
 	return Math.floor(Math.random() * (max - min) + min);
 }
@@ -78,7 +70,7 @@ function draw() {
     ctx.clearRect(0, 0, 512, 512);
 	ctx.drawImage(bg, 0, 0);
 
-	for (let i = 0; i < GAME_GRIDSIZE; i++) 
+	for (let i = 0; i < GAME_GRIDSIZE; i++) {
 		for (let j = 0; j < GAME_GRIDSIZE; j++) {
 			ctx.drawImage(GameGrid[i][j].Img, GameGrid[i][j].X, GameGrid[i][j].Y);
             if(GameGrid[i][j].Selected){
@@ -88,8 +80,7 @@ function draw() {
                 ctx.stroke();
             }
 		}
-
-
+    }
 }
 
 function FindMatches(){
@@ -116,7 +107,6 @@ function FindMatches(){
 	}
 }
 
-
 function FindCounts(){
     let suc = false;
     for (let i = 0; i <= GAME_GRIDSIZE - 1; i++)
@@ -127,59 +117,59 @@ function FindCounts(){
                 suc = true;
                 tile = GameGrid[i][j];
                 tile.Kind = UNDEF_KIND;
-                ScoreUpdate(GameGrid[i][j].Count);
+                ScoreUpdate(tile.Count);
+
+                if (tile.Count > 1) {
+                    Time++;
+                }
+
                 tile.Count= 0;
             }
         }
     return suc;
 }
 
-
 function FillEmpty(){
-    for(let i = 0; i <= GAME_GRIDSIZE - 1; i++)
-        for (let j = 0; j <= GAME_GRIDSIZE - 1; j++)
-        {
-            if (GameGrid[i][j].Kind == UNDEF_KIND)
-            {
-                for (let k = i - 1; k >= 0; k--)
-                {
-                    if (GameGrid[k][j].Kind != UNDEF_KIND)
-                    {                         
-                    GameGrid[k][j].NeedY = GameGrid[i][j].Y;                    
-                    GameGrid[i][j].Y = GameGrid[k][j].Y;
-                    GameGrid[i][j].Kind = GameGrid[k][j].Kind;
-                    GameGrid[k][j].Kind = UNDEF_KIND; 
-                    Timer = true;
+    for(let i = 0; i <= GAME_GRIDSIZE - 1; i++) {
+        for (let j = 0; j <= GAME_GRIDSIZE - 1; j++) {
+            if (GameGrid[i][j].Kind == UNDEF_KIND) {
+                for (let k = i - 1; k >= 0; k--) {
+                    if (GameGrid[k][j].Kind != UNDEF_KIND) {                         
+                        GameGrid[k][j].NeedY = GameGrid[i][j].Y;                    
+                        GameGrid[i][j].Y = GameGrid[k][j].Y;
+                        GameGrid[i][j].Kind = GameGrid[k][j].Kind;
+                        GameGrid[k][j].Kind = UNDEF_KIND; 
+                        Timer = true;
                     }
                 }
             }
         }
+    }
 }
 
-function NewTitles(){
-    for (let i = 0; i <= GAME_GRIDSIZE - 1; i++)
-        for (let j = 0; j <= GAME_GRIDSIZE - 1; j++)
-        {
-            if (GameGrid[i][j].Kind === UNDEF_KIND)
-            {
+function NewTitles() {
+    for (let i = 0; i <= GAME_GRIDSIZE - 1; i++) {
+        for (let j = 0; j <= GAME_GRIDSIZE - 1; j++) {
+            if (GameGrid[i][j].Kind === UNDEF_KIND) {
                 GameGrid[i][j].Kind = getRandomGem(GEM_MINNUM, GEM_MAXNUM);
                 GameGrid[i][j].Img =  FIGURE_ID[GameGrid[i][j].Kind];
                 GameGrid[i][j].Y = -64;
                 GameGrid[i][j].NeedY = CONER_MARGIN + i * TILE_SIZE;
                 Timer = true;
             }
-            
         }
+    }
 }
 
-function Bonus1(kind){    
-    for (let i = 0; i <= GAME_GRIDSIZE - 1; i++){
-        for (let j = 0; j <= GAME_GRIDSIZE - 1; j++){
-            if(GameGrid[i][j].Kind === kind){
+function Bonus1(kind) {    
+    for (let i = 0; i <= GAME_GRIDSIZE - 1; i++) {
+        for (let j = 0; j <= GAME_GRIDSIZE - 1; j++) {
+            if(GameGrid[i][j].Kind === kind) {
                 GameGrid[i][j].Count++;
             }            
         }
     }
+
     Matches();
 }
 
@@ -187,9 +177,11 @@ function Bonus2(col, row) {
     for (let i = 0; i <= GAME_GRIDSIZE - 1; i++){
         GameGrid[i][col].Count++;
     }
+
     for (let i = 0; i <= GAME_GRIDSIZE - 1; i++){
         GameGrid[row][i].Count++;
     }
+
     Matches();
 }
 
@@ -210,14 +202,15 @@ function UseBonus(bonusNum){
 }
 
 function MouseDown(event) {
-if (!IsMoving){     
+if (!IsMoving) {     
         let rect = cvs.getBoundingClientRect();
+
         let posX = event.clientX - rect.left;
         let posY = event.clientY - rect.top;
 
         let tile = GameGrid[(posY - (posY % TILE_SIZE)) / TILE_SIZE ][(posX - (posX % TILE_SIZE)) / TILE_SIZE];
 
-        if(BonusUsing){
+        if(BonusUsing) {
             switch (BonusNum) {
                 case 1:
                     Bonus1(tile.Kind);
@@ -229,56 +222,51 @@ if (!IsMoving){
                     Bonus3();
                     break;
             }
+
             BonusUsing = false;
+
         } else {
             tile.Selected = true;
             CheckGrid(tile.Row, tile.Col);
+
             draw();
         }    
 
     }
 }
 
-function CheckGrid(k, l)
-{
-for (let i = 0; i <= GAME_GRIDSIZE - 1; i++)
-    for (let j = 0; j <= GAME_GRIDSIZE - 1; j++)
-    {
-        let title1 = GameGrid[i][j];
-        let title2 = GameGrid[k][l];
-                  
-        if (title1.Row !== k || title1.Col !== l)
-        {
-            if (title1.Selected)
-            {
-                if (title1.Row < GAME_GRIDSIZE - 1 && GameGrid[title1.Row + 1][title1.Col].Selected ||
-                    title1.Row > 0 && GameGrid[title1.Row - 1][title1.Col].Selected ||
-                    title1.Col < GAME_GRIDSIZE - 1 && GameGrid[title1.Row][title1.Col + 1].Selected ||
-                    title1.Col > 0 && GameGrid[title1.Row][title1.Col - 1].Selected) 
-                {
-                    title1.Selected = false;
-                    title2.Selected = false;
-                    SwapTiles(i, j, k, l, true); 
+function CheckGrid(k, l) {
+    for (let i = 0; i <= GAME_GRIDSIZE - 1; i++) {
+        for (let j = 0; j <= GAME_GRIDSIZE - 1; j++) {
+            let title1 = GameGrid[i][j];
+            let title2 = GameGrid[k][l];
+                      
+            if (title1.Row !== k || title1.Col !== l) {
+                if (title1.Selected) {
+                    if (title1.Row < GAME_GRIDSIZE - 1 && GameGrid[title1.Row + 1][title1.Col].Selected ||
+                        title1.Row > 0 && GameGrid[title1.Row - 1][title1.Col].Selected ||
+                        title1.Col < GAME_GRIDSIZE - 1 && GameGrid[title1.Row][title1.Col + 1].Selected ||
+                        title1.Col > 0 && GameGrid[title1.Row][title1.Col - 1].Selected) {
+                        
+                        title1.Selected = false;
+                        title2.Selected = false;
 
-                    draw();
-                }
-                else
-                {
-                    title1.Selected = false;
-                    title2.Selected = false;
+                        SwapTiles(i, j, k, l, true); 
 
-                    draw();
+                        draw();
+                    } else {
+                        title1.Selected = false;
+                        title2.Selected = false;
+
+                        draw();
+                    }
                 }
             }
         }
     }
 }
-        
-    
 
-
-function SwapTiles(i, j, k, l, firstswap)
-{
+function SwapTiles(i, j, k, l, firstswap) {
     let temp = GameGrid[k][l];
 
     GameGrid[k][l] = GameGrid[i][j];
@@ -301,17 +289,13 @@ function SwapTiles(i, j, k, l, firstswap)
     GameGrid[i][j].NeedY = GameGrid[k][l].Y;
 
     
-    if (firstswap)
-    {
+    if (firstswap) {
         GameGrid[i][j].Swaped = true;
         GameGrid[k][l].Swaped = true;
     }
 
     Timer = true;
 }
-
-
-
 
 function TileMoves(){
    let movefinish = false;
@@ -322,8 +306,7 @@ function TileMoves(){
                 if ((GameGrid[i][j].NeedX - GameGrid[i][j].X) > 0){
                     GameGrid[i][j].X += TILE_SPEED;
                     movefinish = true;
-                }
-                else{
+                }else {
                     GameGrid[i][j].X -= TILE_SPEED;
                     movefinish = true;
                 }
@@ -333,79 +316,73 @@ function TileMoves(){
                 if ((GameGrid[i][j].NeedY - GameGrid[i][j].Y) > 0){
                     GameGrid[i][j].Y += TILE_SPEED;
                     movefinish = true;
-                }
-                else{
+                } else {
                     GameGrid[i][j].Y -= TILE_SPEED;
                     movefinish = true;
                 }
             }
         }    
     }
+
     draw();
+
     return movefinish
 }
 
 function NewImages(){
     for (let i = 0; i <= GAME_GRIDSIZE - 1; i++){
         for (let j = 0; j <= GAME_GRIDSIZE - 1; j++){
-        GameGrid[i][j].Img = FIGURE_ID [GameGrid[i][j].Kind];
+            GameGrid[i][j].Img = FIGURE_ID [GameGrid[i][j].Kind];
         }
     }        
 }
-
 
 function ScoreUpdate(scr){
     Score+= scr;
     ScoreBoard.textContent = "";
     ScoreBoard.textContent = "Score: " + Score;
 }
+
 var TimerID = setInterval(function(){
      if (Timer){
         IsMoving = true;
             TileMoves();
-            if (!TileMoves())
-            {            
-                if (!Matches())
-                {
+            if (!TileMoves()) {            
+                if (!Matches()) {
                     let a = -1, b = -1, k = -1, l = -1; 
                     
                     /* Find Swaped elements and write their pos in a, b, k, l  */
-                    for (let i = 0; i <= GAME_GRIDSIZE - 1; i++)
-                        for (let j = 0; j <= GAME_GRIDSIZE - 1; j++)
-                        {
-                            if (GameGrid[i][j].Swaped)
-                            {
-                                if (a === -1 && b === -1)
-                                {
+                    for (let i = 0; i <= GAME_GRIDSIZE - 1; i++) {
+                        for (let j = 0; j <= GAME_GRIDSIZE - 1; j++){
+                            if (GameGrid[i][j].Swaped) {
+                                if (a === -1 && b === -1) {
                                     a = i;
                                     b = j;
-                                }
-                                else
-                                {
+                                } else {
                                     k = i;
                                     l = j;
                                 }
                             }
                         }
-                    if (a !== -1 && b !== -1 && k !== -1 && l !== -1)
-                    {                        
+                    }
+
+                    if (a !== -1 && b !== -1 && k !== -1 && l !== -1) {                        
                         Timer = false;
                         IsMoving = false;
+
                         GameGrid[a][b].Swaped = false;
                         GameGrid[k][l].Swaped = false;
+
                         SwapTiles(a, b, k, l, false);
                     }
-                }
-                else
-                {
-                    for (let i = 0; i <= GAME_GRIDSIZE - 1; i++)
-                        for (let j = 0; j <= GAME_GRIDSIZE - 1; j++)
-                        {
-                            if (GameGrid[i][j].Swaped)
-                            {
+                } else {
+                    for (let i = 0; i <= GAME_GRIDSIZE - 1; i++) {
+                        for (let j = 0; j <= GAME_GRIDSIZE - 1; j++) {
+                            if (GameGrid[i][j].Swaped) {
                                 GameGrid[i][j].Swaped = false;
                             }
                         }
+                    }
                 }                
             }
         }             

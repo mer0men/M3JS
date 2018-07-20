@@ -6,7 +6,6 @@ var	TimerLabel = document.getElementById("timer");
 var	GoalLabel = document.getElementById("goal");
 var LvlLabel = document.getElementById("lvl");
 
-
 var bg = new Image();
 var gemTriangle = new Image();
 var gemHexagon = new Image();
@@ -22,9 +21,6 @@ var GOAL = 50;
 var Time = 60;
 var BonusUsing = false;
 var BonusNum = 1;
-
-
-
 
 bg.src = "img1/bg.png";
 gemTriangle.src = "img1/gem1.png";
