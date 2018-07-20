@@ -6,7 +6,7 @@ class Gem {
 		this.Kind = getRandomGem(GEM_MINNUM, GEM_MAXNUM);
 		this.NeedX = this.X;
 		this.NeedY = CONER_MARGIN + y * TILE_SIZE;
-		this.Img = FIGURE_ID[this.Kind];
+		this.Img = FIGURE_ID[StylePack][this.Kind];
 		this.Col = x;
 		this.Row = y;
 		this.Swaped = false;
@@ -68,7 +68,7 @@ function getRandomGem(min, max) {
 
 function draw() {
     ctx.clearRect(0, 0, 512, 512);
-	ctx.drawImage(bg, 0, 0);
+	ctx.drawImage(BACKGROUND_ID[StylePack], 0, 0);
 
 	for (let i = 0; i < GAME_GRIDSIZE; i++) {
 		for (let j = 0; j < GAME_GRIDSIZE; j++) {
@@ -152,7 +152,7 @@ function NewTitles() {
         for (let j = 0; j <= GAME_GRIDSIZE - 1; j++) {
             if (GameGrid[i][j].Kind === UNDEF_KIND) {
                 GameGrid[i][j].Kind = getRandomGem(GEM_MINNUM, GEM_MAXNUM);
-                GameGrid[i][j].Img =  FIGURE_ID[GameGrid[i][j].Kind];
+                GameGrid[i][j].Img =  FIGURE_ID[StylePack][GameGrid[i][j].Kind];
                 GameGrid[i][j].Y = -64;
                 GameGrid[i][j].NeedY = CONER_MARGIN + i * TILE_SIZE;
                 Timer = true;
@@ -332,7 +332,7 @@ function TileMoves(){
 function NewImages(){
     for (let i = 0; i <= GAME_GRIDSIZE - 1; i++){
         for (let j = 0; j <= GAME_GRIDSIZE - 1; j++){
-            GameGrid[i][j].Img = FIGURE_ID [GameGrid[i][j].Kind];
+            GameGrid[i][j].Img = FIGURE_ID[StylePack][GameGrid[i][j].Kind];
         }
     }        
 }
@@ -341,6 +341,14 @@ function ScoreUpdate(scr){
     Score+= scr;
     ScoreBoard.textContent = "";
     ScoreBoard.textContent = "Score: " + Score;
+}
+
+function ChangeStyle(num) {
+    StylePack = num;
+
+    // BACKGROUND_ID[num];
+
+    NewGame(GOAL, LVL);
 }
 
 var TimerID = setInterval(function(){
