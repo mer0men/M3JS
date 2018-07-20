@@ -25,17 +25,17 @@
 			<span class="table" id="sb"> asd</span><br>
 			<span class="table" id="lvl"> Lvl:</span>
 			<span class="table" id="goal"> goal:</span>
-		
-			<input type="button" onclick="soundOn()" value="On"/>
-			<input type="button" onclick="soundOff()" value="Off"/>
-		</div>
+			<span class="toggle">
+    			<input id="music" type="checkbox">
 
-		<div>
-			<input type="button" onclick="ChangeStyle(0)" value="Standart style pack">
-			<input type="button" onclick="ChangeStyle(1)" value="Naruto style pack">
-			<input type="button" onclick="ChangeStyle(2)" value="Third style pack">
-			<input type="button" onclick="ChangeStyle(3)" value="Forth style pack">
-			<input type="button" onclick="ChangeStyle(4)" value="Fifth style pack">
+    			<label data-off="&#9724;" data-on="&#9654;"></label>
+     		</span>
+		</div>
+		<div class="button-container">
+		<a   onclick="ChangeStyle(0)" >Standart style pack</a>
+		<a   onclick="ChangeStyle(1)" >Naruto style pack</a>
+		<a   onclick="ChangeStyle(2)">Third style pack</a>
+		<a   onclick="ChangeStyle(3)" >Secret style pack</a>
 		</div>
 
 		<script type="text/javascript" src="js/music.js"></script>
