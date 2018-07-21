@@ -12,6 +12,8 @@ function InitGame(){
 
 }
 
+
+
 function NewGame(goal, lvl){
     Time = 50;
     Score = 0;
@@ -21,7 +23,7 @@ function NewGame(goal, lvl){
     GOAL = goal;
     GoalLabel.textContent = "Goal: " + GOAL;
     LvlLabel.textContent = "Lvl: " + LVL;
-
+    MoneyLabel.textContent = "Money: " + Money;
 	LVL_Load(lvl - 1);
 
 	Matches();   
@@ -46,6 +48,64 @@ function Matches(){
     }
 
     return suc;
+}
+
+function ChangeStyle(num) {
+    
+    
+
+    switch(num){
+        case 0:
+            StylePack = num;
+            InitGame();
+            break;
+        case 1:
+            if(!SecondGoodBought){
+                if (Money >= 50){
+                    SecondGoodBought = true;
+                    Money -= 50;
+                    GBut1.textContent = "Naruto Pack";
+                    MoneyLabel.textContent = "Money: " + Money;
+                }
+
+            } else {
+                StylePack = num;
+                InitGame();                
+            }
+
+
+            break;
+        case 2:
+            if(!ThirdGoodBought){
+                if (Money >= 50){
+                    ThirdGoodBought = true;
+                    Money -= 50;
+                    GBut2.textContent = "Shaman King Pack";
+                    MoneyLabel.textContent = "Money: " + Money;
+                }
+
+            } else {
+                StylePack = num;
+                InitGame();
+            }
+            break;
+        case 3:
+            if(!FourthGoodBought){
+                if (Money >= 100){
+                    FourthGoodBought = true;
+                    Money -= 100;
+                    GBut3.textContent = "Ultimate Pack";
+                    MoneyLabel.textContent = "Money: " + Money;
+                }
+
+            } else {
+                StylePack = num;
+                InitGame();
+            }
+
+            break;
+    }
+
 }
 
 function getRandomGem(min, max) {
@@ -79,6 +139,20 @@ function FindMatches(){
 				GameGrid[i][j].Kind === GameGrid[i - 1][j].Kind ){
 				for (let n = -1; n <= 1; n++){
 					GameGrid[i + n][j].Count++;
+
+                    if (GameGrid[i + n][j].Kind === 1) {
+                        FirstBonusCounts++;
+                    }
+
+                    if (GameGrid[i + n][j].Kind === 2) {
+                        SecondBonusCounts++;
+                    }
+
+                    if (GameGrid[i + n][j].Kind === 3) {
+                        ThirdBonusCounts++;   
+                    }
+
+
 				}
 			}
 
@@ -89,6 +163,18 @@ function FindMatches(){
 				GameGrid[i][j].Kind === GameGrid[i][j - 1].Kind ){
 				for (let n = -1; n <= 1; n++){
 					GameGrid[i][j + n].Count++;
+
+                    if (GameGrid[i][j + n].Kind === 1) {
+                        FirstBonusCounts++;
+                    }
+
+                    if (GameGrid[i][j + n].Kind === 2) {
+                        SecondBonusCounts++;
+                    }
+
+                    if (GameGrid[i][j + n].Kind === 3) {
+                        ThirdBonusCounts++;   
+                    }
 				}
 			}
 		}
@@ -140,7 +226,7 @@ function NewTitles() {
         for (let j = 0; j <= GAME_GRIDSIZE - 1; j++) {
             if (GameGrid[i][j].Kind === UNDEF_KIND) {
                 GameGrid[i][j].Kind = getRandomGem(GEM_MINNUM, GEM_MAXNUM);
-                GameGrid[i][j].Img =  FIGURE_ID[GameGrid[i][j].Kind];
+                GameGrid[i][j].Img =  FIGURE_ID[StylePack][GameGrid[i][j].Kind];
                 GameGrid[i][j].Y = -64;
                 GameGrid[i][j].NeedY = CONER_MARGIN + i * TILE_SIZE;
                 Timer = true;
@@ -149,44 +235,56 @@ function NewTitles() {
     }
 }
 
-function Bonus1(kind) {    
-    for (let i = 0; i <= GAME_GRIDSIZE - 1; i++) {
-        for (let j = 0; j <= GAME_GRIDSIZE - 1; j++) {
-            if(GameGrid[i][j].Kind === kind) {
-                GameGrid[i][j].Count++;
-            }            
+function Bonus1(kind) {   
+    if (FirstBonusCounts > 10) { 
+        for (let i = 0; i <= GAME_GRIDSIZE - 1; i++) {
+            for (let j = 0; j <= GAME_GRIDSIZE - 1; j++) {
+                if(GameGrid[i][j].Kind === kind) {
+                    GameGrid[i][j].Count++;
+                }            
+            }
         }
-    }
 
-    Matches();
+        FirstBonusCounts = 0;
+
+        Matches();
+    }    
 }
 
 function Bonus2(col, row) {
-    for (let i = 0; i <= GAME_GRIDSIZE - 1; i++){
-        if(GameGrid[i][col].Kind != BLOCK_KIND){
-            GameGrid[i][col].Count++;
+    if (SecondBonusCounts > 10) {
+        for (let i = 0; i <= GAME_GRIDSIZE - 1; i++){
+            if(GameGrid[i][col].Kind != BLOCK_KIND){
+                GameGrid[i][col].Count++;
+            }
         }
-    }
 
-    for (let i = 0; i <= GAME_GRIDSIZE - 1; i++){
-        if(GameGrid[row][i].Kind != BLOCK_KIND){
-            GameGrid[row][i].Count++;
+        for (let i = 0; i <= GAME_GRIDSIZE - 1; i++){
+            if(GameGrid[row][i].Kind != BLOCK_KIND){
+                GameGrid[row][i].Count++;
+            }
         }
-    }
 
-    Matches();
+        SecondBonusCounts = 0;
+
+        Matches();
+    }  
 }
 
 function Bonus3() {
-    for (let i = 0; i <= GAME_GRIDSIZE - 1; i++) {
-        for (let j = 0; j <= GAME_GRIDSIZE - 1; j++) {
-            if(GameGrid[i][j].Kind != BLOCK_KIND){
-                GameGrid[i][j].Count++;
-            }    
+    if (ThirdBonusCounts > 10) {
+        for (let i = 0; i <= GAME_GRIDSIZE - 1; i++) {
+            for (let j = 0; j <= GAME_GRIDSIZE - 1; j++) {
+                if(GameGrid[i][j].Kind != BLOCK_KIND){
+                    GameGrid[i][j].Count++;
+                }    
+            }
         }
-    }
 
-    Matches();
+        ThirdBonusCounts = 0;
+
+        Matches();
+    }    
 }
 
 function UseBonus(bonusNum){
@@ -326,7 +424,7 @@ function TileMoves(){
 function NewImages(){
     for (let i = 0; i <= GAME_GRIDSIZE - 1; i++){
         for (let j = 0; j <= GAME_GRIDSIZE - 1; j++){
-            GameGrid[i][j].Img = FIGURE_ID [GameGrid[i][j].Kind];
+            GameGrid[i][j].Img = FIGURE_ID [StylePack][GameGrid[i][j].Kind];
         }
     }        
 }
@@ -337,13 +435,7 @@ function ScoreUpdate(scr){
     ScoreBoard.textContent = "Score: " + Score;
 }
 
-function changeCursor(){
-    if (BonusUsing){  
-        document.body.style.cursor = "url('cursors/p2.ani')";
-    } else {
-        document.body.style.cursor = "url('cursors/p1.cur') , auto";
-    }
-}
+
 
 var TimerID = setInterval(function(){
 

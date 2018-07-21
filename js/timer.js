@@ -11,6 +11,8 @@ var GAMETIMER = setInterval(function(){
 		GOAL*=2;
 		LVL++;
 		alert("Вы выиграли!!");
+		Money += 20 + Math.floor(Score / 10);
+		MoneyLabel.textContent = "Money: " + Money;
 		NewGame(GOAL, LVL);
 	}
 
