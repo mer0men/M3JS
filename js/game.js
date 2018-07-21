@@ -10,7 +10,7 @@ function InitGame(){
 }
 
 function NewGame(goal, lvl){
-    Time = 50;
+    Time = 60000;
     Score = 0;
     Timer = false;
     IsMoving = false;
@@ -203,10 +203,9 @@ function FillEmpty(){
         for (let j = 0; j <= GAME_GRIDSIZE - 1; j++) {
             if (GameGrid[i][j].Kind == UNDEF_KIND) {
                 for (let k = i - 1; k >= 0; k--) {
-                    if (GameGrid[k][j].Kind != UNDEF_KIND) {                         
-                        GameGrid[k][j].NeedY = GameGrid[i][j].Y;                    
-                        GameGrid[i][j].Y = GameGrid[k][j].Y;
-                        GameGrid[i][j].Kind = GameGrid[k][j].Kind;
+                    if (GameGrid[k][j].Kind != UNDEF_KIND) {                                            
+                        GameGrid[k+1][j].Y = GameGrid[k][j].Y;
+                        GameGrid[k+1][j].Kind = GameGrid[k][j].Kind;
                         GameGrid[k][j].Kind = UNDEF_KIND; 
                         Timer = true;
                     }

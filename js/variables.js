@@ -22,7 +22,7 @@ var	GoalLabel = document.getElementById("goal");
 var LvlLabel = document.getElementById("lvl");
 var MoneyLabel = document.getElementById("money");
 
-var Money = 0; 
+var Money = 1000; 
 var SecondGoodBought = false;
 var ThirdGoodBought = false;
 var FourthGoodBought = false;
@@ -65,7 +65,7 @@ var Score = 0;
 var Timer = false;
 var IsMoving = false;
 var LVL = 1;
-var GOAL = 50;
+var GOAL = 50000;
 var Time = 60;
 var BonusUsing = false;
 var BonusNum = 1;
