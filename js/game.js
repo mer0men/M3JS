@@ -1,29 +1,12 @@
-class Gem {
-	constructor (x, y){
-		this.X = CONER_MARGIN + x * TILE_SIZE;
-		this.Y = -64;
-		this.Count = 0;
-		this.Kind = getRandomGem(GEM_MINNUM, GEM_MAXNUM);
-		this.NeedX = this.X;
-		this.NeedY = CONER_MARGIN + y * TILE_SIZE;
-		this.Img = FIGURE_ID[StylePack][this.Kind];
-		this.Col = x;
-		this.Row = y;
-		this.Swaped = false;
-		this.Selected = false;
-	}
+
+
+function LVL_Load(lvl){
+  GameGrid = LVL_ID[lvl];  
 }
 
-function GameGridCreate(){
-  GameGrid = new Array(GAME_GRIDSIZE);
-  for (let i = 0; i < GameGrid.length; i++) {
-  	GameGrid[i] = new Array(GAME_GRIDSIZE)
-  } 
-
-  for(let i = 0; i< GAME_GRIDSIZE; i++)
-  	for(let j = 0; j< GAME_GRIDSIZE; j++){  		
-  		GameGrid[i][j] = new Gem(j, i);
-  	} 
+function InitGame(){
+    LVLFormer();
+    NewGame(GOAL, LVL);
 }
 
 function NewGame(goal, lvl){
@@ -35,8 +18,8 @@ function NewGame(goal, lvl){
     GOAL = goal;
     GoalLabel.textContent = "Goal: " + GOAL;
     LvlLabel.textContent = "Lvl: " + LVL;
-
-	GameGridCreate();
+    MoneyLabel.textContent = "Money: " + Money;
+	LVL_Load(lvl - 1);
 
 	Matches();   
 }
@@ -62,13 +45,71 @@ function Matches(){
     return suc;
 }
 
+function ChangeStyle(num) {
+    
+    
+
+    switch(num){
+        case 0:
+            StylePack = num;
+            InitGame();
+            break;
+        case 1:
+            if(!SecondGoodBought){
+                if (Money >= 50){
+                    SecondGoodBought = true;
+                    Money -= 50;
+                    GBut1.textContent = "Naruto Pack";
+                    MoneyLabel.textContent = "Money: " + Money;
+                }
+
+            } else {
+                StylePack = num;
+                InitGame();                
+            }
+
+
+            break;
+        case 2:
+            if(!ThirdGoodBought){
+                if (Money >= 50){
+                    ThirdGoodBought = true;
+                    Money -= 50;
+                    GBut2.textContent = "Shaman King Pack";
+                    MoneyLabel.textContent = "Money: " + Money;
+                }
+
+            } else {
+                StylePack = num;
+                InitGame();
+            }
+            break;
+        case 3:
+            if(!FourthGoodBought){
+                if (Money >= 100){
+                    FourthGoodBought = true;
+                    Money -= 100;
+                    GBut3.textContent = "Ultimate Pack";
+                    MoneyLabel.textContent = "Money: " + Money;
+                }
+
+            } else {
+                StylePack = num;
+                InitGame();
+            }
+
+            break;
+    }
+
+}
+
 function getRandomGem(min, max) {
 	return Math.floor(Math.random() * (max - min) + min);
 }
 
 function draw() {
     ctx.clearRect(0, 0, 512, 512);
-	ctx.drawImage(BACKGROUND_ID[StylePack], 0, 0);
+	ctx.drawImage(bg, 0, 0);
 
 	for (let i = 0; i < GAME_GRIDSIZE; i++) {
 		for (let j = 0; j < GAME_GRIDSIZE; j++) {
@@ -88,6 +129,7 @@ function FindMatches(){
 		for (let j = 0; j <= GAME_GRIDSIZE - 1 ; j++){
 			if (i !== 0 && i !== GAME_GRIDSIZE - 1 &&
 				GameGrid[i][j].Kind !== UNDEF_KIND &&
+                GameGrid[i][j].Kind !== BLOCK_KIND &&
 				GameGrid[i][j].Kind === GameGrid[i + 1][j].Kind &&
 				GameGrid[i][j].Kind === GameGrid[i - 1][j].Kind ){
 				for (let n = -1; n <= 1; n++){
@@ -104,11 +146,14 @@ function FindMatches(){
                     if (GameGrid[i + n][j].Kind === 3) {
                         ThirdBonusCounts++;   
                     }
+
+
 				}
 			}
 
 			if (j !== 0 && j !== GAME_GRIDSIZE - 1 &&
 				GameGrid[i][j].Kind !== UNDEF_KIND &&
+                GameGrid[i][j].Kind !== BLOCK_KIND &&
 				GameGrid[i][j].Kind === GameGrid[i][j + 1].Kind &&
 				GameGrid[i][j].Kind === GameGrid[i][j - 1].Kind ){
 				for (let n = -1; n <= 1; n++){
@@ -133,14 +178,14 @@ function FindMatches(){
 
 function FindCounts(){
     let suc = false;
-
-    for (let i = 0; i <= GAME_GRIDSIZE - 1; i++) {
-        for (let j = 0; j <= GAME_GRIDSIZE - 1; j++) {
-            if (GameGrid[i][j].Count > 0) {
+    for (let i = 0; i <= GAME_GRIDSIZE - 1; i++)
+        for (let j = 0; j <= GAME_GRIDSIZE - 1; j++)
+        {
+            if (GameGrid[i][j].Count > 0)
+            {
                 suc = true;
                 tile = GameGrid[i][j];
                 tile.Kind = UNDEF_KIND;
-
                 ScoreUpdate(tile.Count);
 
                 if (tile.Count > 1) {
@@ -150,8 +195,6 @@ function FindCounts(){
                 tile.Count= 0;
             }
         }
-    }
-
     return suc;
 }
 
@@ -187,8 +230,8 @@ function NewTitles() {
     }
 }
 
-function Bonus1(kind) {    
-    if (FirstBonusCounts > 10) {
+function Bonus1(kind) {   
+    if (FirstBonusCounts > 10) { 
         for (let i = 0; i <= GAME_GRIDSIZE - 1; i++) {
             for (let j = 0; j <= GAME_GRIDSIZE - 1; j++) {
                 if(GameGrid[i][j].Kind === kind) {
@@ -200,42 +243,48 @@ function Bonus1(kind) {
         FirstBonusCounts = 0;
 
         Matches();
-    }
+    }    
 }
 
 function Bonus2(col, row) {
     if (SecondBonusCounts > 10) {
         for (let i = 0; i <= GAME_GRIDSIZE - 1; i++){
-            GameGrid[i][col].Count++;
+            if(GameGrid[i][col].Kind != BLOCK_KIND){
+                GameGrid[i][col].Count++;
+            }
         }
 
         for (let i = 0; i <= GAME_GRIDSIZE - 1; i++){
-            GameGrid[row][i].Count++;
+            if(GameGrid[row][i].Kind != BLOCK_KIND){
+                GameGrid[row][i].Count++;
+            }
         }
 
         SecondBonusCounts = 0;
 
         Matches();
-    }
+    }  
 }
 
 function Bonus3() {
     if (ThirdBonusCounts > 10) {
         for (let i = 0; i <= GAME_GRIDSIZE - 1; i++) {
             for (let j = 0; j <= GAME_GRIDSIZE - 1; j++) {
-                GameGrid[i][j].Count++;
+                if(GameGrid[i][j].Kind != BLOCK_KIND){
+                    GameGrid[i][j].Count++;
+                }    
             }
         }
 
         ThirdBonusCounts = 0;
 
         Matches();
-    }
+    }    
 }
 
 function UseBonus(bonusNum){
     BonusNum = bonusNum;
-
+    
     BonusUsing = true;
 }
 
@@ -247,28 +296,28 @@ if (!IsMoving) {
         let posY = event.clientY - rect.top;
 
         let tile = GameGrid[(posY - (posY % TILE_SIZE)) / TILE_SIZE ][(posX - (posX % TILE_SIZE)) / TILE_SIZE];
+        if(tile.Kind != BLOCK_KIND){
+            if(BonusUsing) {
+                switch (BonusNum) {
+                    case 1:
+                        Bonus1(tile.Kind);
+                        break;
+                    case 2:
+                        Bonus2(tile.Col, tile.Row);
+                        break;
+                    case 3:
+                        Bonus3();
+                        break;
+                }
 
-        if(BonusUsing) {
-            switch (BonusNum) {
-                case 1:
-                    Bonus1(tile.Kind);
-                    break;
-                case 2:
-                    Bonus2(tile.Col, tile.Row);
-                    break;
-                case 3:
-                    Bonus3();
-                    break;
-            }
+                BonusUsing = false;
 
-            BonusUsing = false;
-
-        } else {
-            tile.Selected = true;
-            CheckGrid(tile.Row, tile.Col);
-
-            draw();
-        }    
+            } else {
+                tile.Selected = true;
+                CheckGrid(tile.Row, tile.Col);
+                draw();
+            }  
+        }  
 
     }
 }
@@ -370,7 +419,7 @@ function TileMoves(){
 function NewImages(){
     for (let i = 0; i <= GAME_GRIDSIZE - 1; i++){
         for (let j = 0; j <= GAME_GRIDSIZE - 1; j++){
-            GameGrid[i][j].Img = FIGURE_ID[StylePack][GameGrid[i][j].Kind];
+            GameGrid[i][j].Img = FIGURE_ID [StylePack][GameGrid[i][j].Kind];
         }
     }        
 }
@@ -381,16 +430,11 @@ function ScoreUpdate(scr){
     ScoreBoard.textContent = "Score: " + Score;
 }
 
-function ChangeStyle(num) {
-    StylePack = num;
 
-    // BACKGROUND_ID[num];
-
-    NewGame(GOAL, LVL);
-}
 
 var TimerID = setInterval(function(){
-     if (Timer){
+
+    if (Timer){
         IsMoving = true;
             TileMoves();
             if (!TileMoves()) {            

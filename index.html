@@ -4,16 +4,22 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
-		<link rel="stylesheet" type="text/css" href="style.css">i
+		<link rel="stylesheet" type="text/css" href="style.css">
 		<title>Match3</title>
-
+		<script src="https://www.gstatic.com/firebasejs/5.2.0/firebase-app.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/5.2.0/firebase-firestore.js"></script>
 	</head>
-	<body onload="NewGame(50, 1)">
+	<body onload="InitGame()">
+
+
 		<div id="left-Bar">
 			<div id="bonuses">
 				<img src="img1/gem1.png" alt="bonus1" onclick="UseBonus(1)">
 				<img src="img1/gem2.png" alt="bonus2" onclick="UseBonus(2)">
-				<img src="img1/gem3.png" alt="bonus3" onclick="UseBonus(3)">
+				<img src="img1/gem3.png" alt="bonus3" onclick="UseBonus(3)"><br>
+				<h1 id="ScoreOutput">ScoreBoard: </h1>
+				<input type="textfield" id="LatestScore">
+				<button id="SaveButton">Save</button>
 			</div>
 		</div>
 		<div id="content">
@@ -22,21 +28,24 @@
 
 		<div id="right-Bar">
 			<span class="table" id="timer"> Time:</span><br>
-			<span class="table" id="sb"> asd</span><br>
+			<span class="table" id="sb"> Score:</span><br>
 			<span class="table" id="lvl"> Lvl:</span>
-			<span class="table" id="goal"> goal:</span>
-		
-			<input type="button" onclick="soundOn()" value="On"/>
-			<input type="button" onclick="soundOff()" value="Off"/>
+			<span class="table" id="goal"> Goal:</span><br>
+			<span class="table" id="money"> Money:</span><br>
+			<span class="toggle">
+    			<input id="music" type="checkbox" onclick="MusicSwitch()">
+
+    			<label data-off="&#9724;" data-on="&#9654;"></label>
+     		</span>
+		</div>
+		<div class="button-container">
+			<a  onclick="ChangeStyle(0)">Classic Style</a>
+		    <a  onclick="ChangeStyle(1)"><span id="good1">Buy for 50</span></a>
+		    <a  onclick="ChangeStyle(2)"><span id="good2">Buy for 50</span></a>
+		    <a  onclick="ChangeStyle(3)"><span id="good3">Buy for 100</span></a>
 		</div>
 
-		<div>
-			<input type="button" onclick="ChangeStyle(0)" value="Standart style pack">
-			<input type="button" onclick="ChangeStyle(1)" value="Naruto style pack">
-			<input type="button" onclick="ChangeStyle(2)" value="Shaman-king style pack">
-			<input type="button" onclick="ChangeStyle(3)" value="FEFU style pack">
-		</div>
-
+		<script type="text/javascript" src="js/scoreboard.js"></script>
 		<script type="text/javascript" src="js/music.js"></script>
 		<script type="text/javascript" src="js/timer.js"></script>	
 		<script type="text/javascript" src="js/variables.js"></script>

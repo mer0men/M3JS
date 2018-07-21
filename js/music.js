@@ -1,12 +1,12 @@
 var audio = new Audio();
 audio.src = 'music/MainTheme.ogg';
+var music = document.getElementById("music");
 
-function soundOn() {
-	
-	audio.play();
-}
+function MusicSwitch(){
+	if(music.checked == true){
+		audio.play();
+	} else{
+		audio.pause();
+	}
 
-function soundOff() {
-	 
-	audio.pause();
 }
