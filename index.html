@@ -4,11 +4,11 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
-		<link rel="stylesheet" type="text/css" href="style.css">i
+		<link rel="stylesheet" type="text/css" href="style.css">
 		<title>Match3</title>
 
 	</head>
-	<body onload="NewGame(50, 1)">
+	<body onload="InitGame()">
 		<div id="left-Bar">
 			<div id="bonuses">
 				<img src="img1/gem1.png" alt="bonus1" onclick="UseBonus(1)">
@@ -22,11 +22,11 @@
 
 		<div id="right-Bar">
 			<span class="table" id="timer"> Time:</span><br>
-			<span class="table" id="sb"> asd</span><br>
+			<span class="table" id="sb"> Score:</span><br>
 			<span class="table" id="lvl"> Lvl:</span>
-			<span class="table" id="goal"> goal:</span>
+			<span class="table" id="goal"> goal:</span><br>
 			<span class="toggle">
-    			<input id="music" type="checkbox">
+    			<input id="music" type="checkbox" onclick="MusicSwitch()">
 
     			<label data-off="&#9724;" data-on="&#9654;"></label>
      		</span>

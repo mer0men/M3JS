@@ -1,30 +1,18 @@
-class Gem {
-	constructor (x, y){
-		this.X = CONER_MARGIN + x * TILE_SIZE;
-		this.Y = -64;
-		this.Count = 0;
-		this.Kind = getRandomGem(GEM_MINNUM, GEM_MAXNUM);
-		this.NeedX = this.X;
-		this.NeedY = CONER_MARGIN + y * TILE_SIZE;
-		this.Img = FIGURE_ID[StylePack][this.Kind];
-		this.Col = x;
-		this.Row = y;
-		this.Swaped = false;
-		this.Selected = false;
-	}
+
+
+function LVL_Load(lvl){
+  GameGrid = LVL_ID[lvl];
+
+  
 }
 
-function GameGridCreate(){
-  GameGrid = new Array(GAME_GRIDSIZE);
-  for (let i = 0; i < GameGrid.length; i++) {
-  	GameGrid[i] = new Array(GAME_GRIDSIZE)
-  } 
+function InitGame(){
+    LVLFormer();
+    NewGame(GOAL, LVL);
 
-  for(let i = 0; i< GAME_GRIDSIZE; i++)
-  	for(let j = 0; j< GAME_GRIDSIZE; j++){  		
-  		GameGrid[i][j] = new Gem(j, i);
-  	} 
 }
+
+
 
 function NewGame(goal, lvl){
     Time = 50;
@@ -36,7 +24,7 @@ function NewGame(goal, lvl){
     GoalLabel.textContent = "Goal: " + GOAL;
     LvlLabel.textContent = "Lvl: " + LVL;
 
-	GameGridCreate();
+	LVL_Load(lvl - 1);
 
 	Matches();   
 }
@@ -62,13 +50,22 @@ function Matches(){
     return suc;
 }
 
+function ChangeStyle(num) {
+    StylePack = num;
+
+    // BACKGROUND_ID[num];
+
+    InitGame();
+
+}
+
 function getRandomGem(min, max) {
 	return Math.floor(Math.random() * (max - min) + min);
 }
 
 function draw() {
     ctx.clearRect(0, 0, 512, 512);
-	ctx.drawImage(BACKGROUND_ID[StylePack], 0, 0);
+	ctx.drawImage(bg, 0, 0);
 
 	for (let i = 0; i < GAME_GRIDSIZE; i++) {
 		for (let j = 0; j < GAME_GRIDSIZE; j++) {
@@ -88,19 +85,47 @@ function FindMatches(){
 		for (let j = 0; j <= GAME_GRIDSIZE - 1 ; j++){
 			if (i !== 0 && i !== GAME_GRIDSIZE - 1 &&
 				GameGrid[i][j].Kind !== UNDEF_KIND &&
+                GameGrid[i][j].Kind !== BLOCK_KIND &&
 				GameGrid[i][j].Kind === GameGrid[i + 1][j].Kind &&
 				GameGrid[i][j].Kind === GameGrid[i - 1][j].Kind ){
 				for (let n = -1; n <= 1; n++){
 					GameGrid[i + n][j].Count++;
+
+                    if (GameGrid[i + n][j].Kind === 1) {
+                        FirstBonusCounts++;
+                    }
+
+                    if (GameGrid[i + n][j].Kind === 2) {
+                        SecondBonusCounts++;
+                    }
+
+                    if (GameGrid[i + n][j].Kind === 3) {
+                        ThirdBonusCounts++;   
+                    }
+
+
 				}
 			}
 
 			if (j !== 0 && j !== GAME_GRIDSIZE - 1 &&
 				GameGrid[i][j].Kind !== UNDEF_KIND &&
+                GameGrid[i][j].Kind !== BLOCK_KIND &&
 				GameGrid[i][j].Kind === GameGrid[i][j + 1].Kind &&
 				GameGrid[i][j].Kind === GameGrid[i][j - 1].Kind ){
 				for (let n = -1; n <= 1; n++){
 					GameGrid[i][j + n].Count++;
+
+                    if (GameGrid[i][j + n].Kind === 1) {
+                        FirstBonusCounts++;
+                    }
+
+                    if (GameGrid[i][j + n].Kind === 2) {
+                        SecondBonusCounts++;
+                    }
+
+                    if (GameGrid[i][j + n].Kind === 3) {
+                        ThirdBonusCounts++;   
+                    }
 				}
 			}
 		}
@@ -161,38 +186,56 @@ function NewTitles() {
     }
 }
 
-function Bonus1(kind) {    
-    for (let i = 0; i <= GAME_GRIDSIZE - 1; i++) {
-        for (let j = 0; j <= GAME_GRIDSIZE - 1; j++) {
-            if(GameGrid[i][j].Kind === kind) {
-                GameGrid[i][j].Count++;
-            }            
+function Bonus1(kind) {   
+    if (FirstBonusCounts > 10) { 
+        for (let i = 0; i <= GAME_GRIDSIZE - 1; i++) {
+            for (let j = 0; j <= GAME_GRIDSIZE - 1; j++) {
+                if(GameGrid[i][j].Kind === kind) {
+                    GameGrid[i][j].Count++;
+                }            
+            }
         }
-    }
 
-    Matches();
+        FirstBonusCounts = 0;
+
+        Matches();
+    }    
 }
 
 function Bonus2(col, row) {
-    for (let i = 0; i <= GAME_GRIDSIZE - 1; i++){
-        GameGrid[i][col].Count++;
-    }
+    if (SecondBonusCounts > 10) {
+        for (let i = 0; i <= GAME_GRIDSIZE - 1; i++){
+            if(GameGrid[i][col].Kind != BLOCK_KIND){
+                GameGrid[i][col].Count++;
+            }
+        }
 
-    for (let i = 0; i <= GAME_GRIDSIZE - 1; i++){
-        GameGrid[row][i].Count++;
-    }
+        for (let i = 0; i <= GAME_GRIDSIZE - 1; i++){
+            if(GameGrid[row][i].Kind != BLOCK_KIND){
+                GameGrid[row][i].Count++;
+            }
+        }
 
-    Matches();
+        SecondBonusCounts = 0;
+
+        Matches();
+    }  
 }
 
 function Bonus3() {
-    for (let i = 0; i <= GAME_GRIDSIZE - 1; i++) {
-        for (let j = 0; j <= GAME_GRIDSIZE - 1; j++) {
-            GameGrid[i][j].Count++;
+    if (ThirdBonusCounts > 10) {
+        for (let i = 0; i <= GAME_GRIDSIZE - 1; i++) {
+            for (let j = 0; j <= GAME_GRIDSIZE - 1; j++) {
+                if(GameGrid[i][j].Kind != BLOCK_KIND){
+                    GameGrid[i][j].Count++;
+                }    
+            }
         }
-    }
 
-    Matches();
+        ThirdBonusCounts = 0;
+
+        Matches();
+    }    
 }
 
 function UseBonus(bonusNum){
@@ -209,28 +252,28 @@ if (!IsMoving) {
         let posY = event.clientY - rect.top;
 
         let tile = GameGrid[(posY - (posY % TILE_SIZE)) / TILE_SIZE ][(posX - (posX % TILE_SIZE)) / TILE_SIZE];
+        if(tile.Kind != BLOCK_KIND){
+            if(BonusUsing) {
+                switch (BonusNum) {
+                    case 1:
+                        Bonus1(tile.Kind);
+                        break;
+                    case 2:
+                        Bonus2(tile.Col, tile.Row);
+                        break;
+                    case 3:
+                        Bonus3();
+                        break;
+                }
 
-        if(BonusUsing) {
-            switch (BonusNum) {
-                case 1:
-                    Bonus1(tile.Kind);
-                    break;
-                case 2:
-                    Bonus2(tile.Col, tile.Row);
-                    break;
-                case 3:
-                    Bonus3();
-                    break;
-            }
+                BonusUsing = false;
 
-            BonusUsing = false;
-
-        } else {
-            tile.Selected = true;
-            CheckGrid(tile.Row, tile.Col);
-
-            draw();
-        }    
+            } else {
+                tile.Selected = true;
+                CheckGrid(tile.Row, tile.Col);
+                draw();
+            }  
+        }  
 
     }
 }
@@ -332,7 +375,7 @@ function TileMoves(){
 function NewImages(){
     for (let i = 0; i <= GAME_GRIDSIZE - 1; i++){
         for (let j = 0; j <= GAME_GRIDSIZE - 1; j++){
-            GameGrid[i][j].Img = FIGURE_ID[StylePack][GameGrid[i][j].Kind];
+            GameGrid[i][j].Img = FIGURE_ID [StylePack][GameGrid[i][j].Kind];
         }
     }        
 }
@@ -343,16 +386,11 @@ function ScoreUpdate(scr){
     ScoreBoard.textContent = "Score: " + Score;
 }
 
-function ChangeStyle(num) {
-    StylePack = num;
 
-    // BACKGROUND_ID[num];
-
-    NewGame(GOAL, LVL);
-}
 
 var TimerID = setInterval(function(){
-     if (Timer){
+
+    if (Timer){
         IsMoving = true;
             TileMoves();
             if (!TileMoves()) {            

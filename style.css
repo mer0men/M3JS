@@ -1,16 +1,20 @@
 #canvas{
-	padding-left: 0;
-    padding-right: 0;
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
+  padding-left: 0;
+  padding-right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  border-width: 9px;
+  border-style: double; 
+  border-color: red;
+  border-radius: 10px;
 }
 
 .table{
-	border-width: 2px;
-	border-style: double;
-	width: auto;
-    background: linear-gradient(180deg, #ff3000, #ed0200, #ff096c, #d50082);
+  border-width: 2px;
+  border-style: double;
+  width: auto;
+  background: linear-gradient(180deg, #ff3000, #ed0200, #ff096c, #d50082);
 }
 
 #content{
@@ -39,7 +43,7 @@
 .button-container a {
   text-decoration: none;
   outline: none;
-  color: white;
+  color: black;
   display: inline-block;
   position: relative;
   padding: 15px 30px;
