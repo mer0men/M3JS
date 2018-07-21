@@ -14,15 +14,22 @@ class Gem {
 	}
 }
 
-
-
-
 var cvs = document.getElementById("canvas");
 var ctx = cvs.getContext("2d");
 var ScoreBoard = document.getElementById("sb");
 var	TimerLabel = document.getElementById("timer");
 var	GoalLabel = document.getElementById("goal");
 var LvlLabel = document.getElementById("lvl");
+var MoneyLabel = document.getElementById("money");
+
+var Money = 0; 
+var SecondGoodBought = false;
+var ThirdGoodBought = false;
+var FourthGoodBought = false;
+var GBut1 = document.getElementById("good1");
+var GBut2 = document.getElementById("good2");
+var GBut3 = document.getElementById("good3");
+
 
 var gemBlock = new Image();
 var bg = new Image();
@@ -70,7 +77,7 @@ var FirstBonusCounts = 0;
 var SecondBonusCounts = 0;
 var ThirdBonusCounts = 0;
 
-gemBlock.src = "img3/gem3.png"
+gemBlock.src = "img/gemBlock.png"
 bg.src = "img/bg.jpg";
 gemTriangle.src = "img/gem1.png";
 gemHexagon.src = "img/gem2.png";

@@ -1,18 +1,13 @@
 
 
 function LVL_Load(lvl){
-  GameGrid = LVL_ID[lvl];
-
-  
+  GameGrid = LVL_ID[lvl];  
 }
 
 function InitGame(){
     LVLFormer();
     NewGame(GOAL, LVL);
-
 }
-
-
 
 function NewGame(goal, lvl){
     Time = 50;
@@ -23,7 +18,7 @@ function NewGame(goal, lvl){
     GOAL = goal;
     GoalLabel.textContent = "Goal: " + GOAL;
     LvlLabel.textContent = "Lvl: " + LVL;
-
+    MoneyLabel.textContent = "Money: " + Money;
 	LVL_Load(lvl - 1);
 
 	Matches();   
@@ -51,11 +46,60 @@ function Matches(){
 }
 
 function ChangeStyle(num) {
-    StylePack = num;
+    
+    
 
-    // BACKGROUND_ID[num];
+    switch(num){
+        case 0:
+            StylePack = num;
+            InitGame();
+            break;
+        case 1:
+            if(!SecondGoodBought){
+                if (Money >= 50){
+                    SecondGoodBought = true;
+                    Money -= 50;
+                    GBut1.textContent = "Naruto Pack";
+                    MoneyLabel.textContent = "Money: " + Money;
+                }
 
-    InitGame();
+            } else {
+                StylePack = num;
+                InitGame();                
+            }
+
+
+            break;
+        case 2:
+            if(!ThirdGoodBought){
+                if (Money >= 50){
+                    ThirdGoodBought = true;
+                    Money -= 50;
+                    GBut2.textContent = "Shaman King Pack";
+                    MoneyLabel.textContent = "Money: " + Money;
+                }
+
+            } else {
+                StylePack = num;
+                InitGame();
+            }
+            break;
+        case 3:
+            if(!FourthGoodBought){
+                if (Money >= 100){
+                    FourthGoodBought = true;
+                    Money -= 100;
+                    GBut3.textContent = "Ultimate Pack";
+                    MoneyLabel.textContent = "Money: " + Money;
+                }
+
+            } else {
+                StylePack = num;
+                InitGame();
+            }
+
+            break;
+    }
 
 }
 
