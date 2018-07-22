@@ -98,7 +98,8 @@ function ChangeStyle(num) {
     switch(num){
         case 0:
             StylePack = num;
-            InitGame();
+            NewImages();
+            draw();
             break;
         case 1:
             if(!SecondGoodBought){
@@ -111,7 +112,8 @@ function ChangeStyle(num) {
 
             } else {
                 StylePack = num;
-                InitGame();                
+                NewImages();
+                draw();
             }
 
 
@@ -127,7 +129,8 @@ function ChangeStyle(num) {
 
             } else {
                 StylePack = num;
-                InitGame();
+                NewImages();
+                draw();
             }
             break;
         case 3:
@@ -140,7 +143,8 @@ function ChangeStyle(num) {
                 }
             } else {
                 StylePack = num;
-                InitGame();
+                NewImages();
+                draw();
             }
             break;
     }
