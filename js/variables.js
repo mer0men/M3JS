@@ -31,6 +31,13 @@ var GBut2 = document.getElementById("good2");
 var GBut3 = document.getElementById("good3");
 
 
+var IsMenu = false;
+var IsCredits = false;
+var IsCompany = false;
+var IsEndless = false;
+
+
+
 var gemBlock = new Image();
 var bg = new Image();
 var gemTriangle = new Image();
@@ -64,9 +71,9 @@ var GameGrid;
 var Score = 0;
 var Timer = false;
 var IsMoving = false;
-var LVL = 1;
-var GOAL = 50000;
-var Time = 60;
+var LVL = 0;
+var GOAL = 0;
+var Time = 0;
 var BonusUsing = false;
 var BonusNum = 1;
 var StylePack = 0;
@@ -116,7 +123,7 @@ const GAME_GRIDSIZE = 8;
 const GEM_MINNUM = 0, GEM_MAXNUM = 5;
 const TILE_SIZE = 64;
 const CONER_MARGIN = 0;
-const TILE_SPEED = 8;
+const TILE_SPEED = 1;
 const UNDEF_KIND = -1;
 const BLOCK_KIND = FIGURE_ID[StylePack].length - 1;
 

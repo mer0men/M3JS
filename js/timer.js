@@ -1,19 +1,19 @@
 var GAMETIMER = setInterval(function(){
+	if(!IsMenu) {
+		if(IsCompany){
+			Time -= 1;
+			TimerLabel.textContent = "Time: " + Time;
+			if (Time === 0) {
+				alert("Вы проиграли");
+				NewGame();
+			}
 
-	Time -= 1;
-	TimerLabel.textContent = "Time: " + Time;
-	if (Time === 0){
-		alert("вы проиграли");
-		NewGame(50, 1);
-	} 
-
-	if (Score >= GOAL){
-		GOAL*=2;
-		LVL++;
-		alert("Вы выиграли!!");
-		Money += 20 + Math.floor(Score / 10);
-		MoneyLabel.textContent = "Money: " + Money;
-		NewGame(GOAL, LVL);
-	}
-
+			if (Score >= GOAL) {
+				alert("Вы выиграли!!");
+				Money += 20 + Math.floor(Score / 10);
+				MoneyLabel.textContent = "Money: " + Money;
+				NextLVL();
+			}
+		}
+    }
 }, 1000)

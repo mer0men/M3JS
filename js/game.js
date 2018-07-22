@@ -5,23 +5,53 @@ function LVL_Load(lvl){
 }
 
 function InitGame(){
+    IsMenu = true;
     LVLFormer();
-    NewGame(GOAL, LVL);
 }
 
-function NewGame(goal, lvl){
-    Time = 60000;
+function NewGame(){
     Score = 0;
+    GOAL = 80;
+    Time = 60;
+    LVL = 1;
     Timer = false;
     IsMoving = false;
-    LVL = lvl;
-    GOAL = goal;
     GoalLabel.textContent = "Goal: " + GOAL;
     LvlLabel.textContent = "Lvl: " + LVL;
     MoneyLabel.textContent = "Money: " + Money;
-	LVL_Load(lvl - 1);
+	LVL_Load(0);
+	Matches();
+	IsCompany = false;
+}
 
-	Matches();   
+function EndlessGame(){
+    Score = 0;
+    GOAL = 0;
+    Time = 0;
+    LVL = 0;
+    Timer = false;
+    IsMoving = false;
+    GoalLabel.textContent = "Goal: " + GOAL;
+    LvlLabel.textContent = "Lvl: " + LVL;
+    MoneyLabel.textContent = "Money: " + Money;
+    LVL_Load(0);
+    Matches();
+    IsEndless = true;
+}
+
+function NextLVL(){
+    Score = 0;
+    GOAL *=2;
+    Time = 60;
+    LVL++;
+
+    GoalLabel.textContent = "Goal: " + GOAL;
+    LvlLabel.textContent = "Lvl: " + LVL;
+    MoneyLabel.textContent = "Money: " + Money;
+    Timer = false;
+    IsMoving = false;
+    LVL_Load(LVL - 1);
+    Matches();
 }
 
 function Matches(){
@@ -46,8 +76,6 @@ function Matches(){
 }
 
 function ChangeStyle(num) {
-    
-    
 
     switch(num){
         case 0:
@@ -92,12 +120,10 @@ function ChangeStyle(num) {
                     GBut3.textContent = "Ultimate Pack";
                     MoneyLabel.textContent = "Money: " + Money;
                 }
-
             } else {
                 StylePack = num;
                 InitGame();
             }
-
             break;
     }
 
@@ -294,30 +320,53 @@ if (!IsMoving) {
         let posX = event.clientX - rect.left;
         let posY = event.clientY - rect.top;
 
-        let tile = GameGrid[(posY - (posY % TILE_SIZE)) / TILE_SIZE ][(posX - (posX % TILE_SIZE)) / TILE_SIZE];
-        if(tile.Kind != BLOCK_KIND){
-            if(BonusUsing) {
-                switch (BonusNum) {
-                    case 1:
-                        Bonus1(tile.Kind);
-                        break;
-                    case 2:
-                        Bonus2(tile.Col, tile.Row);
-                        break;
-                    case 3:
-                        Bonus3();
-                        break;
+
+        if (IsMenu){
+            if (IsCredits){
+                if(posX >= BackBut.x1 && posX <= BackBut.x2 && posY >= BackBut.y1 && posY <= BackBut.y2){
+                    IsCredits = false;
+                }
+            } else {
+                if(posX >= NewGameBut.x1 && posX <= NewGameBut.x2 && posY >= NewGameBut.y1 && posY <= NewGameBut.y2){
+                    NewGame(50, 1);
+                    IsMenu = false;
                 }
 
-                BonusUsing = false;
+                if(posX >= EndlessModBut.x1 && posX <= EndlessModBut.x2 && posY >= EndlessModBut.y1 && posY <= EndlessModBut.y2){
+                    EndlessGame();
+                    IsMenu = false;
+                }
 
-            } else {
-                tile.Selected = true;
-                CheckGrid(tile.Row, tile.Col);
-                draw();
-            }  
-        }  
+                if(posX >= CreditsBut.x1 && posX <= CreditsBut.x2 && posY >= CreditsBut.y1 && posY <= CreditsBut.y2){
+                    ShowCredits();
+                    IsCredits = true;
+                }
+            }
+        } else {
+            let tile = GameGrid[(posY - (posY % TILE_SIZE)) / TILE_SIZE ][(posX - (posX % TILE_SIZE)) / TILE_SIZE];
+            if (tile.Kind != BLOCK_KIND) {
+                if (BonusUsing) {
+                    switch (BonusNum) {
+                        case 1:
+                            Bonus1(tile.Kind);
+                            break;
+                        case 2:
+                            Bonus2(tile.Col, tile.Row);
+                            break;
+                        case 3:
+                            Bonus3();
+                            break;
+                    }
 
+                    BonusUsing = false;
+
+                } else {
+                    tile.Selected = true;
+                    CheckGrid(tile.Row, tile.Col);
+                    draw();
+                }
+            }
+        }
     }
 }
 
@@ -432,6 +481,13 @@ function ScoreUpdate(scr){
 
 
 var TimerID = setInterval(function(){
+    if (IsMenu){
+        if (IsCredits){
+            ShowCredits();
+        } else {
+            DrawMenu()
+        }
+    }
 
     if (Timer){
         IsMoving = true;
@@ -476,4 +532,4 @@ var TimerID = setInterval(function(){
             }
         }             
 
-}, 1000/24);
+}, 1000/120);
