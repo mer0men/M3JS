@@ -19,6 +19,12 @@ function NewGame(){
     GoalLabel.textContent = "Goal: " + GOAL;
     LvlLabel.textContent = "Lvl: " + LVL;
     MoneyLabel.textContent = "Money: " + Money;
+    FirstBonusCounts = 0;
+    SecondBonusCounts = 0;
+    ThirdBonusCounts = 0;
+    Bonus1label.textContent = "Status: " + FirstBonusCounts + "/10";
+    Bonus2label.textContent = "Status: " + SecondBonusCounts + "/10";
+    Bonus3label.textContent = "Status: " + ThirdBonusCounts + "/10";
 	LVL_Load(0);
 	Matches();
 	IsCompany = true;
@@ -34,6 +40,12 @@ function EndlessGame(){
     GoalLabel.textContent = "Goal: " + GOAL;
     LvlLabel.textContent = "Lvl: " + LVL;
     MoneyLabel.textContent = "Money: " + Money;
+    FirstBonusCounts = 0;
+    SecondBonusCounts = 0;
+    ThirdBonusCounts = 0;
+    Bonus1label.textContent = "Status: " + FirstBonusCounts + "/10";
+    Bonus2label.textContent = "Status: " + SecondBonusCounts + "/10";
+    Bonus3label.textContent = "Status: " + ThirdBonusCounts + "/10";
     LVL_Load(0);
     Matches();
     IsEndless = true;
@@ -48,6 +60,12 @@ function NextLVL(){
     GoalLabel.textContent = "Goal: " + GOAL;
     LvlLabel.textContent = "Lvl: " + LVL;
     MoneyLabel.textContent = "Money: " + Money;
+    FirstBonusCounts = 0;
+    SecondBonusCounts = 0;
+    ThirdBonusCounts = 0;
+    Bonus1label.textContent = "Status: " + FirstBonusCounts + "/10";
+    Bonus2label.textContent = "Status: " + SecondBonusCounts + "/10";
+    Bonus3label.textContent = "Status: " + ThirdBonusCounts + "/10";
     Timer = false;
     IsMoving = false;
     LVL_Load(LVL - 1);
@@ -160,20 +178,31 @@ function FindMatches(){
 				GameGrid[i][j].Kind === GameGrid[i - 1][j].Kind ){
 				for (let n = -1; n <= 1; n++){
 					GameGrid[i + n][j].Count++;
+                    if(!BonusUsing){
+                        if (GameGrid[i + n][j].Kind === 1) {
+                            FirstBonusCounts++;
+                            Bonus1label.textContent = "Status: " + FirstBonusCounts + "/10";
+                            if (FirstBonusCounts > 10){
+                                Bonus1label.textContent = "Ready";
+                            }
+                        }
 
-                    if (GameGrid[i + n][j].Kind === 1) {
-                        FirstBonusCounts++;
+                        if (GameGrid[i + n][j].Kind === 2) {
+                            SecondBonusCounts++;
+                            Bonus2label.textContent = "Status: " + SecondBonusCounts + "/10";
+                            if (SecondBonusCounts > 10){
+                                Bonus2label.textContent = "Ready";
+                            }
+                        }
+
+                        if (GameGrid[i + n][j].Kind === 3) {
+                            ThirdBonusCounts++;
+                            Bonus3label.textContent = "Status: " + ThirdBonusCounts + "/10";
+                            if (ThirdBonusCounts > 10){
+                                Bonus3label.textContent = "Ready";
+                            }
+                        }
                     }
-
-                    if (GameGrid[i + n][j].Kind === 2) {
-                        SecondBonusCounts++;
-                    }
-
-                    if (GameGrid[i + n][j].Kind === 3) {
-                        ThirdBonusCounts++;   
-                    }
-
-
 				}
 			}
 
@@ -184,17 +213,30 @@ function FindMatches(){
 				GameGrid[i][j].Kind === GameGrid[i][j - 1].Kind ){
 				for (let n = -1; n <= 1; n++){
 					GameGrid[i][j + n].Count++;
+                    if(BonusUsing){
+                        if (GameGrid[i][j + n].Kind === 1) {
+                            FirstBonusCounts++;
+                            Bonus1label.textContent = "Status: " + FirstBonusCounts + "/10";
+                            if (FirstBonusCounts > 10){
+                                Bonus1label.textContent = "Ready";
+                            }
+                        }
 
-                    if (GameGrid[i][j + n].Kind === 1) {
-                        FirstBonusCounts++;
-                    }
+                        if (GameGrid[i][j + n].Kind === 2) {
+                            SecondBonusCounts++;
+                            Bonus2label.textContent = "Status: " + SecondBonusCounts + "/10";
+                            if (SecondBonusCounts > 10){
+                                Bonus2label.textContent = "Ready";
+                            }
+                        }
 
-                    if (GameGrid[i][j + n].Kind === 2) {
-                        SecondBonusCounts++;
-                    }
-
-                    if (GameGrid[i][j + n].Kind === 3) {
-                        ThirdBonusCounts++;   
+                        if (GameGrid[i][j + n].Kind === 3) {
+                            ThirdBonusCounts++;
+                            Bonus3label.textContent = "Status: " + ThirdBonusCounts + "/10";
+                            if (ThirdBonusCounts > 10){
+                                Bonus3label.textContent = "Ready";
+                            }
+                        }
                     }
 				}
 			}
@@ -267,6 +309,7 @@ function Bonus1(kind) {
         }
 
         FirstBonusCounts = 0;
+        Bonus1label.textContent = "Status: " + FirstBonusCounts + "/10";
 
         Matches();
     }    
@@ -287,6 +330,7 @@ function Bonus2(col, row) {
         }
 
         SecondBonusCounts = 0;
+        Bonus2label.textContent = "Status: " + SecondBonusCounts + "/10";
 
         Matches();
     }  
@@ -303,6 +347,7 @@ function Bonus3() {
         }
 
         ThirdBonusCounts = 0;
+        Bonus3label.textContent = "Status: " + ThirdBonusCounts + "/10";
 
         Matches();
     }    

@@ -21,6 +21,9 @@ var	TimerLabel = document.getElementById("timer");
 var	GoalLabel = document.getElementById("goal");
 var LvlLabel = document.getElementById("lvl");
 var MoneyLabel = document.getElementById("money");
+var Bonus1label = document.getElementById("bonus1");
+var Bonus2label = document.getElementById("bonus2");
+var Bonus3label = document.getElementById("bonus3");
 
 var Money = 1000; 
 var SecondGoodBought = false;
