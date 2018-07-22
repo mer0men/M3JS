@@ -17,7 +17,7 @@ function NewGame(){
     Timer = false;
     IsMoving = false;
     GoalLabel.textContent = "Goal: " + GOAL;
-    LvlLabel.textContent = "Lvl: " + LVL;
+    LvlLabel.textContent = "Level: " + LVL;
     MoneyLabel.textContent = "Money: " + Money;
     FirstBonusCounts = 0;
     SecondBonusCounts = 0;
@@ -37,8 +37,9 @@ function EndlessGame(){
     LVL = 0;
     Timer = false;
     IsMoving = false;
-    GoalLabel.textContent = "Goal: " + GOAL;
-    LvlLabel.textContent = "Lvl: " + LVL;
+    TimerLabel.textContent = "Time: UNLIMITED";
+    GoalLabel.textContent = "Goal: None";
+    LvlLabel.textContent = "Level: ENDLESS";
     MoneyLabel.textContent = "Money: " + Money;
     FirstBonusCounts = 0;
     SecondBonusCounts = 0;
@@ -56,9 +57,8 @@ function NextLVL(){
     GOAL += 80;
     Time = 60;
     LVL++;
-
     GoalLabel.textContent = "Goal: " + GOAL;
-    LvlLabel.textContent = "Lvl: " + LVL;
+    LvlLabel.textContent = "Level: " + LVL;
     MoneyLabel.textContent = "Money: " + Money;
     FirstBonusCounts = 0;
     SecondBonusCounts = 0;
