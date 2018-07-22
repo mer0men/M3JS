@@ -5,7 +5,8 @@ var GAMETIMER = setInterval(function(){
 			TimerLabel.textContent = "Time: " + Time;
 			if (Time === 0) {
 				alert("Вы проиграли");
-				NewGame();
+				IsCompany = false;
+				InitGame();
 			}
 
 			if (Score >= GOAL) {

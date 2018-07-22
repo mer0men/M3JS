@@ -78,7 +78,7 @@ var BonusUsing = false;
 var BonusNum = 1;
 var StylePack = 0;
 
-var LVL_ID = [4]
+var LVL_ID = [5];
 //Bonuses
 var FirstBonusCounts = 0;
 var SecondBonusCounts = 0;
@@ -202,7 +202,28 @@ function LVLFormer(){
   		LVL_ID[3][i][7].Kind = BLOCK_KIND;
   		LVL_ID[3][i][0].Kind = BLOCK_KIND;
   		LVL_ID[3][7][i].Kind = BLOCK_KIND;
-  	} 
+  	}
 
+  	//___________________________________________
 
+    LVL_ID[4] = new Array(GAME_GRIDSIZE);
+    for (let i = 0; i < LVL_ID[4].length; i++) {
+        LVL_ID[4][i] = new Array(GAME_GRIDSIZE)
+    }
+
+    for(let i = 0; i< GAME_GRIDSIZE; i++){
+        for(let j = 0; j< GAME_GRIDSIZE; j++){
+            LVL_ID[4][i][j] = new Gem(j, i);
+        }
+    }
+
+    for (let i = 0; i < LVL_ID[4].length; i++) {
+        LVL_ID[4][0][i].Kind = BLOCK_KIND;
+    }
+
+    for (let i = 4; i <= 7; i++) {
+        for (let j = 3; j <= 4; j++) {
+            LVL_ID[4][i][j].Kind = BLOCK_KIND;
+        }
+    }
 }	

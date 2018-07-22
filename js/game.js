@@ -21,7 +21,7 @@ function NewGame(){
     MoneyLabel.textContent = "Money: " + Money;
 	LVL_Load(0);
 	Matches();
-	IsCompany = false;
+	IsCompany = true;
 }
 
 function EndlessGame(){
@@ -41,7 +41,7 @@ function EndlessGame(){
 
 function NextLVL(){
     Score = 0;
-    GOAL *=2;
+    GOAL += 80;
     Time = 60;
     LVL++;
 
@@ -229,7 +229,8 @@ function FillEmpty(){
         for (let j = 0; j <= GAME_GRIDSIZE - 1; j++) {
             if (GameGrid[i][j].Kind == UNDEF_KIND) {
                 for (let k = i - 1; k >= 0; k--) {
-                    if (GameGrid[k][j].Kind != UNDEF_KIND) {                                            
+                    if (GameGrid[k][j].Kind != UNDEF_KIND && GameGrid[k][j].Kind !== BLOCK_KIND) {
+
                         GameGrid[k+1][j].Y = GameGrid[k][j].Y;
                         GameGrid[k+1][j].Kind = GameGrid[k][j].Kind;
                         GameGrid[k][j].Kind = UNDEF_KIND; 
