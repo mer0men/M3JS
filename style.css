@@ -4,17 +4,17 @@
   margin-left: auto;
   margin-right: auto;
   display: block;
-  border-width: 9px;
-  border-style: double; 
+  border-width: 4px;
+  border-style: solid; 
   border-color: red;
   border-radius: 10px;
 }
 
 .table{
-  border-width: 2px;
-  border-style: double;
+  border-width: 1px;
+  border-style: solid;
+  border-color: red;
   width: auto;
-  background: linear-gradient(180deg, #ff3000, #ed0200, #ff096c, #d50082);
 }
 
 #content{
@@ -31,14 +31,16 @@
   vertical-align: middle;
 }
 
+#right-Letters{
+  color: black;
+}
+
 #right-Bar{
   width: 26%;
   height: 690px;
   display: table-cell;
   vertical-align: middle;
 }
-
-
 
 .button-container a {
   text-decoration: none;

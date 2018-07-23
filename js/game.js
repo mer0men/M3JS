@@ -1,11 +1,10 @@
-
-
 function LVL_Load(lvl){
   GameGrid = LVL_ID[lvl];  
 }
 
 function InitGame(){
     IsMenu = true;
+
     LVLFormer();
 }
 
@@ -16,17 +15,23 @@ function NewGame(){
     LVL = 1;
     Timer = false;
     IsMoving = false;
+
     GoalLabel.textContent = "Goal: " + GOAL;
     LvlLabel.textContent = "Level: " + LVL;
     MoneyLabel.textContent = "Money: " + Money;
+
     FirstBonusCounts = 0;
     SecondBonusCounts = 0;
     ThirdBonusCounts = 0;
+
     Bonus1label.textContent = "Status: " + FirstBonusCounts + "/10";
     Bonus2label.textContent = "Status: " + SecondBonusCounts + "/10";
     Bonus3label.textContent = "Status: " + ThirdBonusCounts + "/10";
+
 	LVL_Load(0);
+
 	Matches();
+
 	IsCompany = true;
 }
 
@@ -37,18 +42,24 @@ function EndlessGame(){
     LVL = 0;
     Timer = false;
     IsMoving = false;
+
     TimerLabel.textContent = "Time: UNLIMITED";
     GoalLabel.textContent = "Goal: None";
     LvlLabel.textContent = "Level: ENDLESS";
     MoneyLabel.textContent = "Money: " + Money;
+
     FirstBonusCounts = 0;
     SecondBonusCounts = 0;
     ThirdBonusCounts = 0;
+
     Bonus1label.textContent = "Status: " + FirstBonusCounts + "/10";
     Bonus2label.textContent = "Status: " + SecondBonusCounts + "/10";
     Bonus3label.textContent = "Status: " + ThirdBonusCounts + "/10";
+
     LVL_Load(0);
+
     Matches();
+
     IsEndless = true;
 }
 
@@ -57,17 +68,22 @@ function NextLVL(){
     GOAL += 80;
     Time = 60;
     LVL++;
+
     GoalLabel.textContent = "Goal: " + GOAL;
     LvlLabel.textContent = "Level: " + LVL;
     MoneyLabel.textContent = "Money: " + Money;
+
     FirstBonusCounts = 0;
     SecondBonusCounts = 0;
     ThirdBonusCounts = 0;
+
     Bonus1label.textContent = "Status: " + FirstBonusCounts + "/10";
     Bonus2label.textContent = "Status: " + SecondBonusCounts + "/10";
     Bonus3label.textContent = "Status: " + ThirdBonusCounts + "/10";
+
     Timer = false;
     IsMoving = false;
+
     LVL_Load(LVL - 1);
     Matches();
 }
@@ -98,6 +114,7 @@ function ChangeStyle(num) {
     switch(num){
         case 0:
             StylePack = num;
+
             NewImages();
             draw();
             break;
@@ -106,12 +123,14 @@ function ChangeStyle(num) {
                 if (Money >= 50){
                     SecondGoodBought = true;
                     Money -= 50;
+
                     GBut1.textContent = "Naruto Pack";
                     MoneyLabel.textContent = "Money: " + Money;
                 }
 
             } else {
                 StylePack = num;
+
                 NewImages();
                 draw();
             }
@@ -123,6 +142,7 @@ function ChangeStyle(num) {
                 if (Money >= 50){
                     ThirdGoodBought = true;
                     Money -= 50;
+
                     GBut2.textContent = "Shaman King Pack";
                     MoneyLabel.textContent = "Money: " + Money;
                 }
@@ -138,6 +158,7 @@ function ChangeStyle(num) {
                 if (Money >= 100){
                     FourthGoodBought = true;
                     Money -= 100;
+
                     GBut3.textContent = "Ultimate Pack";
                     MoneyLabel.textContent = "Money: " + Money;
                 }
@@ -250,14 +271,13 @@ function FindMatches(){
 
 function FindCounts(){
     let suc = false;
-    for (let i = 0; i <= GAME_GRIDSIZE - 1; i++)
-        for (let j = 0; j <= GAME_GRIDSIZE - 1; j++)
-        {
-            if (GameGrid[i][j].Count > 0)
-            {
+    for (let i = 0; i <= GAME_GRIDSIZE - 1; i++) {
+        for (let j = 0; j <= GAME_GRIDSIZE - 1; j++) {
+            if (GameGrid[i][j].Count > 0) {
                 suc = true;
                 tile = GameGrid[i][j];
                 tile.Kind = UNDEF_KIND;
+
                 ScoreUpdate(tile.Count);
 
                 if (tile.Count > 1) {
@@ -267,6 +287,8 @@ function FindCounts(){
                 tile.Count= 0;
             }
         }
+    }
+
     return suc;
 }
 
@@ -280,6 +302,7 @@ function FillEmpty(){
                         GameGrid[k+1][j].Y = GameGrid[k][j].Y;
                         GameGrid[k+1][j].Kind = GameGrid[k][j].Kind;
                         GameGrid[k][j].Kind = UNDEF_KIND; 
+
                         Timer = true;
                     }
                 }
@@ -296,6 +319,7 @@ function NewTitles() {
                 GameGrid[i][j].Img =  FIGURE_ID[StylePack][GameGrid[i][j].Kind];
                 GameGrid[i][j].Y = -64;
                 GameGrid[i][j].NeedY = CONER_MARGIN + i * TILE_SIZE;
+
                 Timer = true;
             }
         }
@@ -313,6 +337,7 @@ function Bonus1(kind) {
         }
 
         FirstBonusCounts = 0;
+
         Bonus1label.textContent = "Status: " + FirstBonusCounts + "/10";
 
         Matches();
@@ -334,6 +359,7 @@ function Bonus2(col, row) {
         }
 
         SecondBonusCounts = 0;
+
         Bonus2label.textContent = "Status: " + SecondBonusCounts + "/10";
 
         Matches();
@@ -351,6 +377,7 @@ function Bonus3() {
         }
 
         ThirdBonusCounts = 0;
+
         Bonus3label.textContent = "Status: " + ThirdBonusCounts + "/10";
 
         Matches();
@@ -412,6 +439,7 @@ if (!IsMoving) {
 
                 } else {
                     tile.Selected = true;
+
                     CheckGrid(tile.Row, tile.Col);
                     draw();
                 }
@@ -458,6 +486,7 @@ function SwapTiles(i, j, k, l, firstswap) {
     GameGrid[i][j] = temp;
 
     let temp1 = new Gem();
+
     temp1.Col = GameGrid[k][l].Col;
 	temp1.Row = GameGrid[k][l].Row;
 
@@ -490,9 +519,11 @@ function TileMoves(){
             if (GameGrid[i][j].NeedX != GameGrid[i][j].X){
                 if ((GameGrid[i][j].NeedX - GameGrid[i][j].X) > 0){
                     GameGrid[i][j].X += TILE_SPEED;
+
                     movefinish = true;
                 }else {
                     GameGrid[i][j].X -= TILE_SPEED;
+
                     movefinish = true;
                 }
             }
@@ -500,9 +531,11 @@ function TileMoves(){
             if (GameGrid[i][j].NeedY != GameGrid[i][j].Y){
                 if ((GameGrid[i][j].NeedY - GameGrid[i][j].Y) > 0){
                     GameGrid[i][j].Y += TILE_SPEED;
+
                     movefinish = true;
                 } else {
                     GameGrid[i][j].Y -= TILE_SPEED;
+
                     movefinish = true;
                 }
             }
@@ -524,6 +557,7 @@ function NewImages(){
 
 function ScoreUpdate(scr){
     Score+= scr;
+
     ScoreBoard.textContent = "";
     ScoreBoard.textContent = "Score: " + Score;
 }
@@ -541,45 +575,46 @@ var TimerID = setInterval(function(){
 
     if (Timer){
         IsMoving = true;
-            TileMoves();
-            if (!TileMoves()) {            
-                if (!Matches()) {
-                    let a = -1, b = -1, k = -1, l = -1; 
-                    
-                    /* Find Swaped elements and write their pos in a, b, k, l  */
-                    for (let i = 0; i <= GAME_GRIDSIZE - 1; i++) {
-                        for (let j = 0; j <= GAME_GRIDSIZE - 1; j++){
-                            if (GameGrid[i][j].Swaped) {
-                                if (a === -1 && b === -1) {
-                                    a = i;
-                                    b = j;
-                                } else {
-                                    k = i;
-                                    l = j;
-                                }
+
+        TileMoves();
+        if (!TileMoves()) {            
+            if (!Matches()) {
+                let a = -1, b = -1, k = -1, l = -1; 
+                
+                /* Find Swaped elements and write their pos in a, b, k, l  */
+                for (let i = 0; i <= GAME_GRIDSIZE - 1; i++) {
+                    for (let j = 0; j <= GAME_GRIDSIZE - 1; j++){
+                        if (GameGrid[i][j].Swaped) {
+                            if (a === -1 && b === -1) {
+                                a = i;
+                                b = j;
+                            } else {
+                                k = i;
+                                l = j;
                             }
                         }
                     }
+                }
 
-                    if (a !== -1 && b !== -1 && k !== -1 && l !== -1) {                        
-                        Timer = false;
-                        IsMoving = false;
+                if (a !== -1 && b !== -1 && k !== -1 && l !== -1) {                        
+                    Timer = false;
+                    IsMoving = false;
 
-                        GameGrid[a][b].Swaped = false;
-                        GameGrid[k][l].Swaped = false;
+                    GameGrid[a][b].Swaped = false;
+                    GameGrid[k][l].Swaped = false;
 
-                        SwapTiles(a, b, k, l, false);
-                    }
-                } else {
-                    for (let i = 0; i <= GAME_GRIDSIZE - 1; i++) {
-                        for (let j = 0; j <= GAME_GRIDSIZE - 1; j++) {
-                            if (GameGrid[i][j].Swaped) {
-                                GameGrid[i][j].Swaped = false;
-                            }
+                    SwapTiles(a, b, k, l, false);
+                }
+            } else {
+                for (let i = 0; i <= GAME_GRIDSIZE - 1; i++) {
+                    for (let j = 0; j <= GAME_GRIDSIZE - 1; j++) {
+                        if (GameGrid[i][j].Swaped) {
+                            GameGrid[i][j].Swaped = false;
                         }
                     }
-                }                
-            }
-        }             
+                }
+            }                
+        }
+    }             
 
 }, 1000/120);
