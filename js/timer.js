@@ -3,17 +3,21 @@ var GAMETIMER = setInterval(function(){
 		if(IsCompany){
 			Time -= 1;
 			TimerLabel.textContent = "Time: " + Time;
-			if (Time === 0) {
-				alert("Вы проиграли");
-				IsCompany = false;
-				InitGame();
+			if (Time <= 0) {
+				if (!IsMoving) {
+                    alert("Вы проиграли");
+                    IsCompany = false;
+                    InitGame();
+                }
 			}
 
 			if (Score >= GOAL) {
-				alert("Вы выиграли!!");
-				Money += LVL_LIST[LVL - 1].Reward;
-				MoneyLabel.textContent = "Money: " + Money;
-				NextLVL();
+				if (!IsMoving){
+					alert("Вы выиграли!!");
+					Money += LVL_LIST[LVL - 1].Reward;
+					MoneyLabel.textContent = "Money: " + Money;
+					NextLVL();
+				}
 			}
 		}
     }

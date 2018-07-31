@@ -3,6 +3,11 @@ function LVL_Load(lvl){
   GOAL = LVL_LIST[lvl - 1].lvlGOAL;
   LVL = LVL_LIST[lvl - 1].Level;
   Time = LVL_LIST[lvl - 1].Time;
+  for (let i = 0; i < GAME_GRIDSIZE; i++) {
+     for (let j = 0; j < GAME_GRIDSIZE; j++) {
+        GameGrid[i][j].Y = 0;
+     }
+  }
 }
 
 function InitGame(){
@@ -15,7 +20,7 @@ function NewGame(){
     Score = 0;
     LVL_Load(1);
 
-    Timer = false;
+    Timer = true;
     IsMoving = false;
 
     GoalLabel.textContent = "Goal: " + GOAL;
@@ -32,7 +37,6 @@ function NewGame(){
 
 
 
-	Matches();
 
 	IsCompany = true;
 }
@@ -40,7 +44,8 @@ function NewGame(){
 function EndlessGame(){
     Score = 0;
     LVL_Load(1);
-    Timer = false;
+
+    Timer = true;
     IsMoving = false;
 
     TimerLabel.textContent = "Time: UNLIMITED";
@@ -58,7 +63,6 @@ function EndlessGame(){
 
     LVL_Load(1);
 
-    Matches();
 
     IsEndless = true;
 }
@@ -80,7 +84,7 @@ function NextLVL(){
     Bonus2label.textContent = "Status: " + SecondBonusCounts + "/10";
     Bonus3label.textContent = "Status: " + ThirdBonusCounts + "/10";
 
-    Timer = false;
+    Timer = true;
     IsMoving = false;
 
 
