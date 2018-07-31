@@ -17,6 +17,10 @@
   width: auto;
 }
 
+.cur{
+    cursor: url(img/game.cur), auto;
+}
+
 #content{
   width: 26%;
   height: 690px;
