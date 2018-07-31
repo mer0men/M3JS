@@ -11,7 +11,7 @@ var GAMETIMER = setInterval(function(){
 
 			if (Score >= GOAL) {
 				alert("Вы выиграли!!");
-				Money += 20 + Math.floor(Score / 10);
+				Money += LVL_LIST[LVL - 1].Reward;
 				MoneyLabel.textContent = "Money: " + Money;
 				NextLVL();
 			}

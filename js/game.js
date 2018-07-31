@@ -1,5 +1,8 @@
 function LVL_Load(lvl){
-  GameGrid = LVL_ID[lvl];  
+  GameGrid = LVL_LIST[lvl - 1].GG;
+  GOAL = LVL_LIST[lvl - 1].lvlGOAL;
+  LVL = LVL_LIST[lvl - 1].Level;
+  Time = LVL_LIST[lvl - 1].Time;
 }
 
 function InitGame(){
@@ -10,9 +13,8 @@ function InitGame(){
 
 function NewGame(){
     Score = 0;
-    GOAL = 80;
-    Time = 60;
-    LVL = 1;
+    LVL_Load(1);
+
     Timer = false;
     IsMoving = false;
 
@@ -28,7 +30,7 @@ function NewGame(){
     Bonus2label.textContent = "Status: " + SecondBonusCounts + "/10";
     Bonus3label.textContent = "Status: " + ThirdBonusCounts + "/10";
 
-	LVL_Load(0);
+
 
 	Matches();
 
@@ -37,9 +39,7 @@ function NewGame(){
 
 function EndlessGame(){
     Score = 0;
-    GOAL = 0;
-    Time = 0;
-    LVL = 0;
+    LVL_Load(1);
     Timer = false;
     IsMoving = false;
 
@@ -56,7 +56,7 @@ function EndlessGame(){
     Bonus2label.textContent = "Status: " + SecondBonusCounts + "/10";
     Bonus3label.textContent = "Status: " + ThirdBonusCounts + "/10";
 
-    LVL_Load(0);
+    LVL_Load(1);
 
     Matches();
 
@@ -64,10 +64,9 @@ function EndlessGame(){
 }
 
 function NextLVL(){
-    Score = 0;
-    GOAL += 80;
-    Time = 60;
     LVL++;
+    Score = 0;
+    LVL_Load(LVL);
 
     GoalLabel.textContent = "Goal: " + GOAL;
     LvlLabel.textContent = "Level: " + LVL;
@@ -84,7 +83,7 @@ function NextLVL(){
     Timer = false;
     IsMoving = false;
 
-    LVL_Load(LVL - 1);
+
     Matches();
 }
 
@@ -185,7 +184,8 @@ function draw() {
 			ctx.drawImage(GameGrid[i][j].Img, GameGrid[i][j].X, GameGrid[i][j].Y);
             if(GameGrid[i][j].Selected){
                 ctx.beginPath();
-                ctx.rect(GameGrid[i][j].X + 1 , GameGrid[i][j].Y + 1, TILE_SIZE - 1, TILE_SIZE - 1 );
+                ctx.rect(GameGrid[i][j].X + 1 , GameGrid[i][j].Y + 1, TILE_SIZE - 1, TILE_SIZE - 1 )
+                ctx.lineWidth = 2;
                 ctx.strokeStyle="white";
                 ctx.stroke();
             }
