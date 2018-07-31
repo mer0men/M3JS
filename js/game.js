@@ -386,8 +386,42 @@ function Bonus3() {
 
 function UseBonus(bonusNum){
     BonusNum = bonusNum;
+
     
     BonusUsing = true;
+}
+
+function MouseMove(event) {
+
+    let rect = cvs.getBoundingClientRect();
+
+    let posX = event.clientX - rect.left;
+    let posY = event.clientY - rect.top;
+
+    if (IsMenu) {
+        if (IsCredits) {
+            if (posX >= BackBut.x1 && posX <= BackBut.x2 && posY >= BackBut.y1 && posY <= BackBut.y2) {
+                ButSelectionOff();
+                BBSelected = true
+            } else ButSelectionOff()
+        } else {
+            if (posX >= NewGameBut.x1 && posX <= NewGameBut.x2 && posY >= NewGameBut.y1 && posY <= NewGameBut.y2) {
+                ButSelectionOff();
+                NGBSelected = true;
+            } else
+            if (posX >= EndlessModBut.x1 && posX <= EndlessModBut.x2 && posY >= EndlessModBut.y1 && posY <= EndlessModBut.y2) {
+                ButSelectionOff();
+                EMBSelected = true;
+            } else
+            if (posX >= CreditsBut.x1 && posX <= CreditsBut.x2 && posY >= CreditsBut.y1 && posY <= CreditsBut.y2) {
+                ButSelectionOff();
+                CBSelected = true;
+
+            } else ButSelectionOff()
+
+
+        }
+    }
 }
 
 function MouseDown(event) {
