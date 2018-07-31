@@ -4,9 +4,10 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<script src="https://www.gstatic.com/firebasejs/5.3.0/firebase-app.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/5.3.0/firebase-firestore.js"></script>
 		<link rel="stylesheet" type="text/css" href="style.css">
 		<title>Match3</title>
-
 	</head>
 	<body class="cur" onload="InitGame()">
 		<div id="left-Bar">
@@ -22,8 +23,17 @@
 				<div>
 					<img src="img1/gem3.png" alt="bonus3" onclick="UseBonus(3)"><br>
 					<span id="bonus3"> Status: </span>
-				</div>
+				</div><br>
 			</div>
+
+			<div>
+				<h1>ScoreBoard</h1>
+				<input id="LatestScore">
+				<button id="SaveButton">Save</button>
+				<p id="OutputScore"></p><br>
+				<script type="text/javascript" src="js/scoreboard.js"></script>
+			</div>
+
 		</div>
 		<div id="content">
 			<canvas id="canvas" width="512" height="512" onmousemove="MouseMove(event)" onmousedown="MouseDown(event)"></canvas>
