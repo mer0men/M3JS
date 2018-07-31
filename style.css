@@ -10,6 +10,13 @@
   border-radius: 10px;
 }
 
+::selection {
+    background: transparent;
+}
+::-moz-selection {
+    background: transparent;
+}
+
 .table{
   border-width: 1px;
   border-style: solid;
