@@ -3,6 +3,7 @@
 # Developers: 
 1) Чербаджи Максим (Soul7ucker)
 2) Пысин Юрий(Meromen)
+3) Олег Терещенко 
 
 # Goals of projects:
 1) Create gameplay engine:
