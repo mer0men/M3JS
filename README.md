@@ -3,6 +3,7 @@
 # Developers: 
 1) Чербаджи Максим (Soul7ucker)
 2) Пысин Юрий(Meromen)
+3) Олег Терещенко 
 
 # Goals of projects:
 1) Create gameplay engine:
@@ -12,3 +13,5 @@
 2) Level editor
 3) Create shop with customization of gems && wallpapers
 4) Writing originally soundtracks for game
+
+# You can try it: https://meromen.github.io/JS_Match3_SummerPractice/

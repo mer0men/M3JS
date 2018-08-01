@@ -14,6 +14,87 @@ class Gem {
 	}
 }
 
+class Level{
+	constructor(lvl){
+		this.Level = lvl;
+        this.lvlGOAL = this.Level * 60;
+        this.Reward = this.Level * 15;
+        this.Time = 60;
+		this.GG = [];
+        this.GG = new Array(GAME_GRIDSIZE);
+        for (let i = 0; i < this.GG.length; i++) {
+            this.GG[i] = new Array(GAME_GRIDSIZE);
+        }
+
+        for(let i = 0; i< GAME_GRIDSIZE; i++){
+            for(let j = 0; j< GAME_GRIDSIZE; j++){
+                this.GG[i][j] = new Gem(j, i);
+            }
+        }
+	}
+}
+
+class SignInState {
+  constructor(callbackState) {
+    this.fields = [{
+      name: "Email",
+      val: "",
+    },{
+      name: "Password",
+      val: "",
+      hideChars: true,
+    }];
+    this.error = error;
+  }
+
+  get events() {
+    return {
+      keyup: this.keyHandler,
+      keypress: this.typeHandler,
+    }
+  }
+
+  typeHandler(scene, event) {
+        if (event.key !== "Enter")
+            this.fields[this.fieldFocus].val += event.key;
+        scene.update();
+    }
+
+  keyHandler(scene, event) {
+        switch(event.keyCode) {
+            case 27: //escape
+                scene.setState(this.callbackState);
+                break;
+            case 8: //backspace
+                this.fields[this.fieldFocus].val =
+                    this.fields[this.fieldFocus].val.substr(0, this.fields[this.fieldFocus].val.length-1);
+                break;
+            case 38: //arrow up
+                this.fieldFocus--;
+                break;
+            case 40: //arrow down
+                this.fieldFocus++;
+                break;
+            case 13:
+                function authCallback(result) {
+                    if (result) {
+                        scene.setState(this.callbackState);
+                    } else {
+                        scene.setState(new SignInState(this.callbackState, "An error has occurred. Try again."));
+                    }
+                    
+                    scene.update();
+                }
+
+                let email = this.fields[0].val;
+                let pass = this.fields[1].val;
+                scene.setState(new LoadingState(login, this, [email, pass], authCallback));
+        }
+
+        scene.update();
+    }
+}
+
 var cvs = document.getElementById("canvas");
 var ctx = cvs.getContext("2d");
 var ScoreBoard = document.getElementById("sb");
@@ -21,8 +102,11 @@ var	TimerLabel = document.getElementById("timer");
 var	GoalLabel = document.getElementById("goal");
 var LvlLabel = document.getElementById("lvl");
 var MoneyLabel = document.getElementById("money");
+var Bonus1label = document.getElementById("bonus1");
+var Bonus2label = document.getElementById("bonus2");
+var Bonus3label = document.getElementById("bonus3");
 
-var Money = 0; 
+var Money = 1000; 
 var SecondGoodBought = false;
 var ThirdGoodBought = false;
 var FourthGoodBought = false;
@@ -30,6 +114,11 @@ var GBut1 = document.getElementById("good1");
 var GBut2 = document.getElementById("good2");
 var GBut3 = document.getElementById("good3");
 
+
+var IsMenu = false;
+var IsCredits = false;
+var IsCompany = false;
+var IsEndless = false;
 
 var gemBlock = new Image();
 var bg = new Image();
@@ -62,17 +151,16 @@ var gemStar3 = new Image();
 
 var GameGrid;
 var Score = 0;
-var GlobalScore = 0;
 var Timer = false;
 var IsMoving = false;
-var LVL = 1;
-var GOAL = 50;
-var Time = 60;
+var LVL = 0;
+var GOAL = 0;
+var Time = 0;
 var BonusUsing = false;
 var BonusNum = 1;
 var StylePack = 0;
 
-var LVL_ID = [4]
+var LVL_LIST = [];
 //Bonuses
 var FirstBonusCounts = 0;
 var SecondBonusCounts = 0;
@@ -117,86 +205,61 @@ const GAME_GRIDSIZE = 8;
 const GEM_MINNUM = 0, GEM_MAXNUM = 5;
 const TILE_SIZE = 64;
 const CONER_MARGIN = 0;
-const TILE_SPEED = 8;
+const TILE_SPEED = 1;
 const UNDEF_KIND = -1;
 const BLOCK_KIND = FIGURE_ID[StylePack].length - 1;
 
-
-
 function LVLFormer(){
-	LVL_ID[0] = new Array(GAME_GRIDSIZE);
-  	for (let i = 0; i < LVL_ID[0].length; i++) {
-  		LVL_ID[0][i] = new Array(GAME_GRIDSIZE)
-  	} 
-
-  	for(let i = 0; i< GAME_GRIDSIZE; i++){
-  		for(let j = 0; j< GAME_GRIDSIZE; j++){  		
-  			LVL_ID[0][i][j] = new Gem(j, i);
-  		} 
-  	}	
+    LVL_LIST.push(new Level(LVL_LIST.length + 1));
 
   	//__________________________________________
 
-  	LVL_ID[1] = new Array(GAME_GRIDSIZE);
-  	for (let i = 0; i < LVL_ID[1].length; i++) {
-  		LVL_ID[1][i] = new Array(GAME_GRIDSIZE)
-  	} 
+    LVL_LIST.push(new Level(LVL_LIST.length + 1));
 
-  	for(let i = 0; i< GAME_GRIDSIZE; i++){
-  		for(let j = 0; j< GAME_GRIDSIZE; j++){  		
-  			LVL_ID[1][i][j] = new Gem(j, i);
-  		}
-  	} 
-
-  	for (let i = 0; i < LVL_ID[1].length; i++) {
-  		LVL_ID[1][7][i].Kind = BLOCK_KIND;
-  		LVL_ID[1][6][i].Kind = BLOCK_KIND;
+    for (let i = 0; i < LVL_LIST[LVL_LIST.length - 1].GG.length; i++) {
+  		LVL_LIST[LVL_LIST.length - 1].GG[7][i].Kind = BLOCK_KIND;
+        LVL_LIST[LVL_LIST.length - 1].GG[6][i].Kind = BLOCK_KIND;
   	} 
 
   	//_________________________________________
 
-  	LVL_ID[2] = new Array(GAME_GRIDSIZE);
-  	for (let i = 0; i < LVL_ID[2].length; i++) {
-  		LVL_ID[2][i] = new Array(GAME_GRIDSIZE)
-  	} 
+    LVL_LIST.push(new Level(LVL_LIST.length + 1));
 
-  	for(let i = 0; i< GAME_GRIDSIZE; i++){
-  		for(let j = 0; j< GAME_GRIDSIZE; j++){  		
-  			LVL_ID[2][i][j] = new Gem(j, i);
-  		}
-  	} 
+  	for (let i = 0; i < LVL_LIST[LVL_LIST.length - 1].GG.length; i++) {
+        LVL_LIST[LVL_LIST.length - 1].GG[7][i].Kind = BLOCK_KIND;
+        LVL_LIST[LVL_LIST.length - 1].GG[6][i].Kind = BLOCK_KIND;
+  	}
 
-  	for (let i = 0; i < LVL_ID[2].length; i++) {
-  		LVL_ID[2][7][i].Kind = BLOCK_KIND;
-  		LVL_ID[2][6][i].Kind = BLOCK_KIND;
-  	} 
-  	LVL_ID[2][5][0].Kind = BLOCK_KIND;
-  	LVL_ID[2][5][1].Kind = BLOCK_KIND;
-  	LVL_ID[2][5][6].Kind = BLOCK_KIND;
-  	LVL_ID[2][5][7].Kind = BLOCK_KIND;
-  	LVL_ID[2][4][0].Kind = BLOCK_KIND;
-  	LVL_ID[2][4][7].Kind = BLOCK_KIND;
+    LVL_LIST[LVL_LIST.length - 1].GG[5][0].Kind = BLOCK_KIND;
+    LVL_LIST[LVL_LIST.length - 1].GG[5][1].Kind = BLOCK_KIND;
+    LVL_LIST[LVL_LIST.length - 1].GG[5][6].Kind = BLOCK_KIND;
+    LVL_LIST[LVL_LIST.length - 1].GG[5][7].Kind = BLOCK_KIND;
+    LVL_LIST[LVL_LIST.length - 1].GG[4][0].Kind = BLOCK_KIND;
+    LVL_LIST[LVL_LIST.length - 1].GG[4][7].Kind = BLOCK_KIND;
 
   	//_________________________________________
 
 
-  	LVL_ID[3] = new Array(GAME_GRIDSIZE);
-  	for (let i = 0; i < LVL_ID[3].length; i++) {
-  		LVL_ID[3][i] = new Array(GAME_GRIDSIZE)
-  	} 
-
-  	for(let i = 0; i< GAME_GRIDSIZE; i++){
-  		for(let j = 0; j< GAME_GRIDSIZE; j++){  		
-  			LVL_ID[3][i][j] = new Gem(j, i);
-  		}
-  	} 
+    LVL_LIST.push(new Level(LVL_LIST.length + 1));
 
 
-  	for (let i = 0; i < LVL_ID[1].length; i++) {
-  		LVL_ID[3][i][7].Kind = BLOCK_KIND;
-  		LVL_ID[3][i][0].Kind = BLOCK_KIND;
-  		LVL_ID[3][7][i].Kind = BLOCK_KIND;
-  	} 
+  	for (let i = 0; i < LVL_LIST[LVL_LIST.length - 1].GG.length; i++) {
+        LVL_LIST[LVL_LIST.length - 1].GG[i][7].Kind = BLOCK_KIND;
+        LVL_LIST[LVL_LIST.length - 1].GG.Kind = BLOCK_KIND;
+        LVL_LIST[LVL_LIST.length - 1].GG.Kind = BLOCK_KIND;
+  	}
 
+  	//___________________________________________
 
+    LVL_LIST.push(new Level(LVL_LIST.length + 1));
+
+    for (let i = 0; i < LVL_LIST[LVL_LIST.length - 1].GG.length; i++) {
+        LVL_LIST[LVL_LIST.length - 1].GG[0][i].Kind = BLOCK_KIND;
+    }
+
+    for (let i = 4; i <= 7; i++) {
+        for (let j = 3; j <= 4; j++) {
+            LVL_LIST[LVL_LIST.length - 1].GG[i][j].Kind = BLOCK_KIND;
+        }
+    }
 }	

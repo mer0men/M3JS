@@ -1,27 +1,90 @@
-
-
 function LVL_Load(lvl){
-  GameGrid = LVL_ID[lvl];  
+  GameGrid = LVL_LIST[lvl - 1].GG;
+  GOAL = LVL_LIST[lvl - 1].lvlGOAL;
+  LVL = LVL_LIST[lvl - 1].Level;
+  Time = LVL_LIST[lvl - 1].Time;
+  for (let i = 0; i < GAME_GRIDSIZE; i++) {
+     for (let j = 0; j < GAME_GRIDSIZE; j++) {
+        GameGrid[i][j].Y = 0;
+     }
+  }
 }
 
 function InitGame(){
+    IsMenu = true;
+
     LVLFormer();
-    NewGame(GOAL, LVL);
 }
 
-function NewGame(goal, lvl){
-    Time = 50;
+function NewGame(){
     Score = 0;
-    Timer = false;
-    IsMoving = false;
-    LVL = lvl;
-    GOAL = goal;
-    GoalLabel.textContent = "Goal: " + GOAL;
-    LvlLabel.textContent = "Lvl: " + LVL;
-    MoneyLabel.textContent = "Money: " + Money;
-	LVL_Load(lvl - 1);
+    LVL_Load(1);
 
-	Matches();   
+    Timer = true;
+    IsMoving = false;
+
+    GoalLabel.textContent = "Goal: " + GOAL;
+    LvlLabel.textContent = "Level: " + LVL;
+    MoneyLabel.textContent = "Money: " + Money;
+
+    FirstBonusCounts = 0;
+    SecondBonusCounts = 0;
+    ThirdBonusCounts = 0;
+
+    Bonus1label.textContent = "Status: " + FirstBonusCounts + "/10";
+    Bonus2label.textContent = "Status: " + SecondBonusCounts + "/10";
+    Bonus3label.textContent = "Status: " + ThirdBonusCounts + "/10";
+
+	IsCompany = true;
+}
+
+function EndlessGame(){
+    Score = 0;
+    LVL_Load(1);
+
+    Timer = true;
+    IsMoving = false;
+
+    TimerLabel.textContent = "Time: UNLIMITED";
+    GoalLabel.textContent = "Goal: None";
+    LvlLabel.textContent = "Level: ENDLESS";
+    MoneyLabel.textContent = "Money: " + Money;
+
+    FirstBonusCounts = 0;
+    SecondBonusCounts = 0;
+    ThirdBonusCounts = 0;
+
+    Bonus1label.textContent = "Status: " + FirstBonusCounts + "/10";
+    Bonus2label.textContent = "Status: " + SecondBonusCounts + "/10";
+    Bonus3label.textContent = "Status: " + ThirdBonusCounts + "/10";
+
+    LVL_Load(1);
+    
+    IsEndless = true;
+}
+
+function NextLVL(){
+    LVL++;
+    Score = 0;
+    LVL_Load(LVL);
+
+    GoalLabel.textContent = "Goal: " + GOAL;
+    LvlLabel.textContent = "Level: " + LVL;
+    MoneyLabel.textContent = "Money: " + Money;
+
+    FirstBonusCounts = 0;
+    SecondBonusCounts = 0;
+    ThirdBonusCounts = 0;
+
+    Bonus1label.textContent = "Status: " + FirstBonusCounts + "/10";
+    Bonus2label.textContent = "Status: " + SecondBonusCounts + "/10";
+    Bonus3label.textContent = "Status: " + ThirdBonusCounts + "/10";
+
+    Timer = true;
+    IsMoving = false;
+
+
+    Matches();
 }
 
 function Matches(){
@@ -46,26 +109,29 @@ function Matches(){
 }
 
 function ChangeStyle(num) {
-    
-    
 
     switch(num){
         case 0:
             StylePack = num;
-            InitGame();
+
+            NewImages();
+            draw();
             break;
         case 1:
             if(!SecondGoodBought){
                 if (Money >= 50){
                     SecondGoodBought = true;
                     Money -= 50;
+
                     GBut1.textContent = "Naruto Pack";
                     MoneyLabel.textContent = "Money: " + Money;
                 }
 
             } else {
                 StylePack = num;
-                InitGame();                
+
+                NewImages();
+                draw();
             }
 
 
@@ -75,13 +141,15 @@ function ChangeStyle(num) {
                 if (Money >= 50){
                     ThirdGoodBought = true;
                     Money -= 50;
+
                     GBut2.textContent = "Shaman King Pack";
                     MoneyLabel.textContent = "Money: " + Money;
                 }
 
             } else {
                 StylePack = num;
-                InitGame();
+                NewImages();
+                draw();
             }
             break;
         case 3:
@@ -89,15 +157,15 @@ function ChangeStyle(num) {
                 if (Money >= 100){
                     FourthGoodBought = true;
                     Money -= 100;
+
                     GBut3.textContent = "Ultimate Pack";
                     MoneyLabel.textContent = "Money: " + Money;
                 }
-
             } else {
                 StylePack = num;
-                InitGame();
+                NewImages();
+                draw();
             }
-
             break;
     }
 
@@ -116,7 +184,8 @@ function draw() {
 			ctx.drawImage(GameGrid[i][j].Img, GameGrid[i][j].X, GameGrid[i][j].Y);
             if(GameGrid[i][j].Selected){
                 ctx.beginPath();
-                ctx.rect(GameGrid[i][j].X + 1 , GameGrid[i][j].Y + 1, TILE_SIZE - 1, TILE_SIZE - 1 );
+                ctx.rect(GameGrid[i][j].X + 1 , GameGrid[i][j].Y + 1, TILE_SIZE - 1, TILE_SIZE - 1 )
+                ctx.lineWidth = 2;
                 ctx.strokeStyle="white";
                 ctx.stroke();
             }
@@ -134,20 +203,31 @@ function FindMatches(){
 				GameGrid[i][j].Kind === GameGrid[i - 1][j].Kind ){
 				for (let n = -1; n <= 1; n++){
 					GameGrid[i + n][j].Count++;
+                    if(!BonusUsing){
+                        if (GameGrid[i + n][j].Kind === 1) {
+                            FirstBonusCounts++;
+                            Bonus1label.textContent = "Status: " + FirstBonusCounts + "/10";
+                            if (FirstBonusCounts > 10){
+                                Bonus1label.textContent = "Ready";
+                            }
+                        }
 
-                    if (GameGrid[i + n][j].Kind === 1) {
-                        FirstBonusCounts++;
+                        if (GameGrid[i + n][j].Kind === 2) {
+                            SecondBonusCounts++;
+                            Bonus2label.textContent = "Status: " + SecondBonusCounts + "/10";
+                            if (SecondBonusCounts > 10){
+                                Bonus2label.textContent = "Ready";
+                            }
+                        }
+
+                        if (GameGrid[i + n][j].Kind === 3) {
+                            ThirdBonusCounts++;
+                            Bonus3label.textContent = "Status: " + ThirdBonusCounts + "/10";
+                            if (ThirdBonusCounts > 10){
+                                Bonus3label.textContent = "Ready";
+                            }
+                        }
                     }
-
-                    if (GameGrid[i + n][j].Kind === 2) {
-                        SecondBonusCounts++;
-                    }
-
-                    if (GameGrid[i + n][j].Kind === 3) {
-                        ThirdBonusCounts++;   
-                    }
-
-
 				}
 			}
 
@@ -158,17 +238,30 @@ function FindMatches(){
 				GameGrid[i][j].Kind === GameGrid[i][j - 1].Kind ){
 				for (let n = -1; n <= 1; n++){
 					GameGrid[i][j + n].Count++;
+                    if(BonusUsing){
+                        if (GameGrid[i][j + n].Kind === 1) {
+                            FirstBonusCounts++;
+                            Bonus1label.textContent = "Status: " + FirstBonusCounts + "/10";
+                            if (FirstBonusCounts > 10){
+                                Bonus1label.textContent = "Ready";
+                            }
+                        }
 
-                    if (GameGrid[i][j + n].Kind === 1) {
-                        FirstBonusCounts++;
-                    }
+                        if (GameGrid[i][j + n].Kind === 2) {
+                            SecondBonusCounts++;
+                            Bonus2label.textContent = "Status: " + SecondBonusCounts + "/10";
+                            if (SecondBonusCounts > 10){
+                                Bonus2label.textContent = "Ready";
+                            }
+                        }
 
-                    if (GameGrid[i][j + n].Kind === 2) {
-                        SecondBonusCounts++;
-                    }
-
-                    if (GameGrid[i][j + n].Kind === 3) {
-                        ThirdBonusCounts++;   
+                        if (GameGrid[i][j + n].Kind === 3) {
+                            ThirdBonusCounts++;
+                            Bonus3label.textContent = "Status: " + ThirdBonusCounts + "/10";
+                            if (ThirdBonusCounts > 10){
+                                Bonus3label.textContent = "Ready";
+                            }
+                        }
                     }
 				}
 			}
@@ -178,14 +271,13 @@ function FindMatches(){
 
 function FindCounts(){
     let suc = false;
-    for (let i = 0; i <= GAME_GRIDSIZE - 1; i++)
-        for (let j = 0; j <= GAME_GRIDSIZE - 1; j++)
-        {
-            if (GameGrid[i][j].Count > 0)
-            {
+    for (let i = 0; i <= GAME_GRIDSIZE - 1; i++) {
+        for (let j = 0; j <= GAME_GRIDSIZE - 1; j++) {
+            if (GameGrid[i][j].Count > 0) {
                 suc = true;
                 tile = GameGrid[i][j];
                 tile.Kind = UNDEF_KIND;
+
                 ScoreUpdate(tile.Count);
 
                 if (tile.Count > 1) {
@@ -195,6 +287,8 @@ function FindCounts(){
                 tile.Count= 0;
             }
         }
+    }
+
     return suc;
 }
 
@@ -203,11 +297,12 @@ function FillEmpty(){
         for (let j = 0; j <= GAME_GRIDSIZE - 1; j++) {
             if (GameGrid[i][j].Kind == UNDEF_KIND) {
                 for (let k = i - 1; k >= 0; k--) {
-                    if (GameGrid[k][j].Kind != UNDEF_KIND) {                         
-                        GameGrid[k][j].NeedY = GameGrid[i][j].Y;                    
-                        GameGrid[i][j].Y = GameGrid[k][j].Y;
-                        GameGrid[i][j].Kind = GameGrid[k][j].Kind;
+                    if (GameGrid[k][j].Kind != UNDEF_KIND && GameGrid[k][j].Kind !== BLOCK_KIND) {
+
+                        GameGrid[k+1][j].Y = GameGrid[k][j].Y;
+                        GameGrid[k+1][j].Kind = GameGrid[k][j].Kind;
                         GameGrid[k][j].Kind = UNDEF_KIND; 
+
                         Timer = true;
                     }
                 }
@@ -224,6 +319,7 @@ function NewTitles() {
                 GameGrid[i][j].Img =  FIGURE_ID[StylePack][GameGrid[i][j].Kind];
                 GameGrid[i][j].Y = -64;
                 GameGrid[i][j].NeedY = CONER_MARGIN + i * TILE_SIZE;
+
                 Timer = true;
             }
         }
@@ -241,6 +337,8 @@ function Bonus1(kind) {
         }
 
         FirstBonusCounts = 0;
+
+        Bonus1label.textContent = "Status: " + FirstBonusCounts + "/10";
 
         Matches();
     }    
@@ -262,6 +360,8 @@ function Bonus2(col, row) {
 
         SecondBonusCounts = 0;
 
+        Bonus2label.textContent = "Status: " + SecondBonusCounts + "/10";
+
         Matches();
     }  
 }
@@ -278,14 +378,49 @@ function Bonus3() {
 
         ThirdBonusCounts = 0;
 
+        Bonus3label.textContent = "Status: " + ThirdBonusCounts + "/10";
+
         Matches();
     }    
 }
 
 function UseBonus(bonusNum){
     BonusNum = bonusNum;
+
     
     BonusUsing = true;
+}
+
+function MouseMove(event) {
+
+    let rect = cvs.getBoundingClientRect();
+
+    let posX = event.clientX - rect.left;
+    let posY = event.clientY - rect.top;
+
+    if (IsMenu) {
+        if (IsCredits) {
+            if (posX >= BackBut.x1 && posX <= BackBut.x2 && posY >= BackBut.y1 && posY <= BackBut.y2) {
+                ButSelectionOff();
+                BBSelected = true
+            } else ButSelectionOff()
+        } else {
+            if (posX >= NewGameBut.x1 && posX <= NewGameBut.x2 && posY >= NewGameBut.y1 && posY <= NewGameBut.y2) {
+                ButSelectionOff();
+                NGBSelected = true;
+            } else
+            if (posX >= EndlessModBut.x1 && posX <= EndlessModBut.x2 && posY >= EndlessModBut.y1 && posY <= EndlessModBut.y2) {
+                ButSelectionOff();
+                EMBSelected = true;
+            } else
+            if (posX >= CreditsBut.x1 && posX <= CreditsBut.x2 && posY >= CreditsBut.y1 && posY <= CreditsBut.y2) {
+                ButSelectionOff();
+                CBSelected = true;
+
+            } else ButSelectionOff();
+
+        }
+    }
 }
 
 function MouseDown(event) {
@@ -295,30 +430,54 @@ if (!IsMoving) {
         let posX = event.clientX - rect.left;
         let posY = event.clientY - rect.top;
 
-        let tile = GameGrid[(posY - (posY % TILE_SIZE)) / TILE_SIZE ][(posX - (posX % TILE_SIZE)) / TILE_SIZE];
-        if(tile.Kind != BLOCK_KIND){
-            if(BonusUsing) {
-                switch (BonusNum) {
-                    case 1:
-                        Bonus1(tile.Kind);
-                        break;
-                    case 2:
-                        Bonus2(tile.Col, tile.Row);
-                        break;
-                    case 3:
-                        Bonus3();
-                        break;
+
+        if (IsMenu){
+            if (IsCredits){
+                if(posX >= BackBut.x1 && posX <= BackBut.x2 && posY >= BackBut.y1 && posY <= BackBut.y2){
+                    IsCredits = false;
+                }
+            } else {
+                if(posX >= NewGameBut.x1 && posX <= NewGameBut.x2 && posY >= NewGameBut.y1 && posY <= NewGameBut.y2){
+                    NewGame(50, 1);
+                    IsMenu = false;
                 }
 
-                BonusUsing = false;
+                if(posX >= EndlessModBut.x1 && posX <= EndlessModBut.x2 && posY >= EndlessModBut.y1 && posY <= EndlessModBut.y2){
+                    EndlessGame();
+                    IsMenu = false;
+                }
 
-            } else {
-                tile.Selected = true;
-                CheckGrid(tile.Row, tile.Col);
-                draw();
-            }  
-        }  
+                if(posX >= CreditsBut.x1 && posX <= CreditsBut.x2 && posY >= CreditsBut.y1 && posY <= CreditsBut.y2){
+                    ShowCredits();
+                    IsCredits = true;
+                }
+            }
+        } else {
+            let tile = GameGrid[(posY - (posY % TILE_SIZE)) / TILE_SIZE ][(posX - (posX % TILE_SIZE)) / TILE_SIZE];
+            if (tile.Kind != BLOCK_KIND) {
+                if (BonusUsing) {
+                    switch (BonusNum) {
+                        case 1:
+                            Bonus1(tile.Kind);
+                            break;
+                        case 2:
+                            Bonus2(tile.Col, tile.Row);
+                            break;
+                        case 3:
+                            Bonus3();
+                            break;
+                    }
 
+                    BonusUsing = false;
+
+                } else {
+                    tile.Selected = true;
+
+                    CheckGrid(tile.Row, tile.Col);
+                    draw();
+                }
+            }
+        }
     }
 }
 
@@ -360,6 +519,7 @@ function SwapTiles(i, j, k, l, firstswap) {
     GameGrid[i][j] = temp;
 
     let temp1 = new Gem();
+
     temp1.Col = GameGrid[k][l].Col;
 	temp1.Row = GameGrid[k][l].Row;
 
@@ -392,9 +552,11 @@ function TileMoves(){
             if (GameGrid[i][j].NeedX != GameGrid[i][j].X){
                 if ((GameGrid[i][j].NeedX - GameGrid[i][j].X) > 0){
                     GameGrid[i][j].X += TILE_SPEED;
+
                     movefinish = true;
                 }else {
                     GameGrid[i][j].X -= TILE_SPEED;
+
                     movefinish = true;
                 }
             }
@@ -402,9 +564,11 @@ function TileMoves(){
             if (GameGrid[i][j].NeedY != GameGrid[i][j].Y){
                 if ((GameGrid[i][j].NeedY - GameGrid[i][j].Y) > 0){
                     GameGrid[i][j].Y += TILE_SPEED;
+
                     movefinish = true;
                 } else {
                     GameGrid[i][j].Y -= TILE_SPEED;
+
                     movefinish = true;
                 }
             }
@@ -426,6 +590,7 @@ function NewImages(){
 
 function ScoreUpdate(scr){
     Score+= scr;
+
     ScoreBoard.textContent = "";
     ScoreBoard.textContent = "Score: " + Score;
 }
@@ -433,48 +598,56 @@ function ScoreUpdate(scr){
 
 
 var TimerID = setInterval(function(){
+    if (IsMenu){
+        if (IsCredits){
+            ShowCredits();
+        } else {
+            DrawMenu()
+        }
+    }
 
     if (Timer){
         IsMoving = true;
-            TileMoves();
-            if (!TileMoves()) {            
-                if (!Matches()) {
-                    let a = -1, b = -1, k = -1, l = -1; 
-                    
-                    /* Find Swaped elements and write their pos in a, b, k, l  */
-                    for (let i = 0; i <= GAME_GRIDSIZE - 1; i++) {
-                        for (let j = 0; j <= GAME_GRIDSIZE - 1; j++){
-                            if (GameGrid[i][j].Swaped) {
-                                if (a === -1 && b === -1) {
-                                    a = i;
-                                    b = j;
-                                } else {
-                                    k = i;
-                                    l = j;
-                                }
+
+        TileMoves();
+        if (!TileMoves()) {            
+            if (!Matches()) {
+                let a = -1, b = -1, k = -1, l = -1; 
+                
+                /* Find Swaped elements and write their pos in a, b, k, l  */
+                for (let i = 0; i <= GAME_GRIDSIZE - 1; i++) {
+                    for (let j = 0; j <= GAME_GRIDSIZE - 1; j++){
+                        if (GameGrid[i][j].Swaped) {
+                            if (a === -1 && b === -1) {
+                                a = i;
+                                b = j;
+                            } else {
+                                k = i;
+                                l = j;
                             }
                         }
                     }
+                }
 
-                    if (a !== -1 && b !== -1 && k !== -1 && l !== -1) {                        
-                        Timer = false;
-                        IsMoving = false;
+                if (a !== -1 && b !== -1 && k !== -1 && l !== -1) {                        
+                    Timer = false;
+                    IsMoving = false;
 
-                        GameGrid[a][b].Swaped = false;
-                        GameGrid[k][l].Swaped = false;
+                    GameGrid[a][b].Swaped = false;
+                    GameGrid[k][l].Swaped = false;
 
-                        SwapTiles(a, b, k, l, false);
-                    }
-                } else {
-                    for (let i = 0; i <= GAME_GRIDSIZE - 1; i++) {
-                        for (let j = 0; j <= GAME_GRIDSIZE - 1; j++) {
-                            if (GameGrid[i][j].Swaped) {
-                                GameGrid[i][j].Swaped = false;
-                            }
+                    SwapTiles(a, b, k, l, false);
+                }
+            } else {
+                for (let i = 0; i <= GAME_GRIDSIZE - 1; i++) {
+                    for (let j = 0; j <= GAME_GRIDSIZE - 1; j++) {
+                        if (GameGrid[i][j].Swaped) {
+                            GameGrid[i][j].Swaped = false;
                         }
                     }
-                }                
-            }
-        }             
+                }
+            }                
+        }
+    }             
 
-}, 1000/24);
+}, 1000/120);
