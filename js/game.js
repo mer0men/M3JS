@@ -8,6 +8,7 @@ function LVL_Load(lvl){
         GameGrid[i][j].Y = 0;
      }
   }
+  NewImages();
 }
 
 function InitGame(){
@@ -26,6 +27,7 @@ function NewGame(){
     GoalLabel.textContent = "Goal: " + GOAL;
     LvlLabel.textContent = "Level: " + LVL;
     MoneyLabel.textContent = "Money: " + Money;
+    ScoreBoard.textContent = "Score: " + Score;
 
     FirstBonusCounts = 0;
     SecondBonusCounts = 0;
@@ -34,9 +36,6 @@ function NewGame(){
     Bonus1label.textContent = "Status: " + FirstBonusCounts + "/10";
     Bonus2label.textContent = "Status: " + SecondBonusCounts + "/10";
     Bonus3label.textContent = "Status: " + ThirdBonusCounts + "/10";
-
-
-
 
 	IsCompany = true;
 }
@@ -51,7 +50,7 @@ function EndlessGame(){
     TimerLabel.textContent = "Time: UNLIMITED";
     GoalLabel.textContent = "Goal: None";
     LvlLabel.textContent = "Level: ENDLESS";
-    MoneyLabel.textContent = "Money: " + Money;
+    ScoreBoard.textContent = "Score: " + Score;
 
     FirstBonusCounts = 0;
     SecondBonusCounts = 0;
@@ -62,7 +61,6 @@ function EndlessGame(){
     Bonus3label.textContent = "Status: " + ThirdBonusCounts + "/10";
 
     LVL_Load(1);
-
 
     IsEndless = true;
 }
@@ -75,6 +73,7 @@ function NextLVL(){
     GoalLabel.textContent = "Goal: " + GOAL;
     LvlLabel.textContent = "Level: " + LVL;
     MoneyLabel.textContent = "Money: " + Money;
+    ScoreBoard.textContent = "Score: " + Score;
 
     FirstBonusCounts = 0;
     SecondBonusCounts = 0;
@@ -85,10 +84,7 @@ function NextLVL(){
     Bonus3label.textContent = "Status: " + ThirdBonusCounts + "/10";
 
     Timer = true;
-    IsMoving = false;
-
-
-    Matches();
+    IsMoving = false;   
 }
 
 function Matches(){
@@ -242,7 +238,7 @@ function FindMatches(){
 				GameGrid[i][j].Kind === GameGrid[i][j - 1].Kind ){
 				for (let n = -1; n <= 1; n++){
 					GameGrid[i][j + n].Count++;
-                    if(BonusUsing){
+                    if(!BonusUsing){
                         if (GameGrid[i][j + n].Kind === 1) {
                             FirstBonusCounts++;
                             Bonus1label.textContent = "Status: " + FirstBonusCounts + "/10";

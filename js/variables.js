@@ -45,7 +45,7 @@ var Bonus1label = document.getElementById("bonus1");
 var Bonus2label = document.getElementById("bonus2");
 var Bonus3label = document.getElementById("bonus3");
 
-var Money = 1000; 
+var Money = 0; 
 var SecondGoodBought = false;
 var ThirdGoodBought = false;
 var FourthGoodBought = false;
@@ -185,11 +185,10 @@ function LVLFormer(){
 
     LVL_LIST.push(new Level(LVL_LIST.length + 1));
 
-
   	for (let i = 0; i < LVL_LIST[LVL_LIST.length - 1].GG.length; i++) {
         LVL_LIST[LVL_LIST.length - 1].GG[i][7].Kind = BLOCK_KIND;
-        LVL_LIST[LVL_LIST.length - 1].GG.Kind = BLOCK_KIND;
-        LVL_LIST[LVL_LIST.length - 1].GG.Kind = BLOCK_KIND;
+        LVL_LIST[LVL_LIST.length - 1].GG[i][0].Kind = BLOCK_KIND;
+        LVL_LIST[LVL_LIST.length - 1].GG[7][i].Kind = BLOCK_KIND;
   	}
 
   	//___________________________________________
