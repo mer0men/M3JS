@@ -19,6 +19,7 @@ function InitGame(){
 
 function NewGame(){
     Score = 0;
+    GlobalScore = 0;
     LVL_Load(1);
 
     Timer = true;
@@ -67,6 +68,7 @@ function EndlessGame(){
 
 function NextLVL(){
     LVL++;
+    GlobalScore += Score;
     Score = 0;
     LVL_Load(LVL);
 

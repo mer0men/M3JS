@@ -92,6 +92,7 @@ var gemStar3 = new Image();
 
 var GameGrid;
 var Score = 0;
+var GlobalScore = 0;
 var Timer = false;
 var IsMoving = false;
 var LVL = 0;

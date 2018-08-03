@@ -15,11 +15,23 @@ saveHeader.addEventListener("click", function() {
 
 	const textToSave = inputHeader.value;  
 
-	data = {
+	if (textToSave !== '') {
 
-		name: textToSave,
-		score: Score
+		data = {
 
+			name: textToSave,
+			score: GlobalScore		
+
+		}
+
+	} else {
+
+		data = {
+
+			name: "UNKNOWN",
+			score: GlobalScore
+
+		}
 	}
 
 	ref.push(data);
@@ -36,7 +48,7 @@ function gotData(data) {
 
  	for (let i = 0; i < scorelistings.length; i++) {
 
- 	scorelistings[i].remove();
+ 		scorelistings[i].remove();
 
     }
 
@@ -46,17 +58,29 @@ function gotData(data) {
 	scores = data.val();
 	keys = Object.keys(scores);
 
-	for (let i = 0; i < keys.length; i++) {
+	let values = [];
+
+	for (var i = 0; i < keys.length; i++) {
 
 		let k;
+
+		k = keys[i];
+		
+		values.push(scores[k]);
+
+	}
+
+    bubbleSort(values);
+
+	for (let i = 0; i < 10; i++) {
+
 		let name;
 		let score;
 		let li;
 
+		name = values[i].name;
+		score = values[i].score;
 
-		k = keys[i];
-		name = scores[k].name;
-		score = scores[k].score;
 		li = createElement('li', name + ': ' + score);
 
 		li.class('scorelisting');
@@ -70,4 +94,28 @@ function errData(err) {
 	console.log('Error!');
 	console.log(err);
 
+}
+
+function bubbleSort(a)
+{
+    let swapped;
+
+    do {
+
+        swapped = false;
+
+        for (let i=0; i < a.length-1; i++) {
+
+            if (a[i].score < a[i+1].score) {
+
+                let temp = a[i];
+
+                a[i] = a[i+1];
+                a[i+1] = temp;
+                swapped = true;
+
+            }
+        }
+
+    } while (swapped);
 }
