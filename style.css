@@ -42,6 +42,14 @@
   vertical-align: middle;
 }
 
+#bonuses{
+  float: right;
+}
+
+#ScoreBoard{
+  float: left;
+}
+
 #right-Letters{
   color: black;
 }
