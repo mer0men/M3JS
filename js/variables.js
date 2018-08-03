@@ -45,7 +45,7 @@ var Bonus1label = document.getElementById("bonus1");
 var Bonus2label = document.getElementById("bonus2");
 var Bonus3label = document.getElementById("bonus3");
 
-var Money = 0; 
+var Money = 1000; 
 var SecondGoodBought = false;
 var ThirdGoodBought = false;
 var FourthGoodBought = false;
