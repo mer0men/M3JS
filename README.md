@@ -14,4 +14,4 @@
 3) Create shop with customization of gems && wallpapers
 4) Writing originally soundtracks for game
 
-# You can try it: https://meromen.github.io/M3JS/
+# You can try it: https://meromen.github.io/JS_Match3_SummerPractice/

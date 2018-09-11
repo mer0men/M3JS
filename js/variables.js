@@ -58,7 +58,7 @@ var IsMenu = false;
 var IsCredits = false;
 var IsCompany = false;
 var IsEndless = false;
-
+var IsAutoGame = false;
 
 
 var gemBlock = new Image();

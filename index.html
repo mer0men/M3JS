@@ -19,7 +19,7 @@
 		    messagingSenderId: "382102288431"
 		  };
 		  firebase.initializeApp(config);
-		</script>
+		</script>		
 		<link rel="stylesheet" type="text/css" href="style.css">
 		<title>Match3</title>
 	</head>
@@ -37,7 +37,14 @@
 				<div>
 					<img src="bonus/bonus3.png" alt="bonus3" onclick="UseBonus(3)"><br>
 					<span id="bonus3"> Status: </span>
-				</div><br>
+				</div>
+				<div>
+					<button id="Help" onclick="Help()"> Help Pls</button>
+				</div>
+				<div>
+					<button id="AutoPlay" onclick="AutoPlaySwitcher()">AI is OP</button>
+				</div>
+				<br>
 			</div>
 
 			<div id="ScoreGame">

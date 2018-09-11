@@ -599,6 +599,151 @@ function ScoreUpdate(scr){
 }
 
 
+function Help(){
+    if(!IsMoving){
+
+        for(let i = 0; i <= GAME_GRIDSIZE - 1; i++){
+            for (let j = 0; j <= GAME_GRIDSIZE - 1 ; j++){
+                if (i !== 0 && i !== GAME_GRIDSIZE - 1 &&
+                    j !== 0 && j !== GAME_GRIDSIZE - 1 &&
+                    GameGrid[i][j].Kind !== UNDEF_KIND &&
+                    GameGrid[i][j].Kind !== BLOCK_KIND &&
+                    GameGrid[i - 1][j].Kind !== UNDEF_KIND &&
+                    GameGrid[i - 1][j].Kind !== BLOCK_KIND &&
+                    GameGrid[i + 1][j].Kind !== UNDEF_KIND &&
+                    GameGrid[i + 1][j].Kind !== BLOCK_KIND &&
+                    GameGrid[i - 1][j].Kind === GameGrid[i + 1][j].Kind){
+                        if(GameGrid[i][j - 1].Kind === GameGrid[i + 1][j].Kind){
+                            SwapTiles(i, j, i, j - 1, true);
+                            return
+                        } else if(GameGrid[i][j + 1].Kind === GameGrid[i + 1][j].Kind){
+                            SwapTiles(i, j, i, j + 1, true);
+                            return
+                        }
+                }
+            }
+        }
+
+        for(let i = 0; i <= GAME_GRIDSIZE - 1; i++){
+            for (let j = 0; j <= GAME_GRIDSIZE - 1 ; j++){
+                if (i !== 0 && i !== GAME_GRIDSIZE - 1 &&                
+                    j !== 0 && j !== GAME_GRIDSIZE - 1 &&
+                    GameGrid[i][j].Kind !== UNDEF_KIND &&
+                    GameGrid[i][j].Kind !== BLOCK_KIND &&
+                    GameGrid[i][j - 1].Kind !== UNDEF_KIND &&
+                    GameGrid[i][j - 1].Kind !== BLOCK_KIND &&
+                    GameGrid[i][j + 1].Kind !== UNDEF_KIND &&
+                    GameGrid[i][j + 1].Kind !== BLOCK_KIND &&
+                    GameGrid[i][j - 1].Kind === GameGrid[i][j + 1].Kind){
+                        if(GameGrid[i - 1][j].Kind === GameGrid[i][j + 1].Kind){
+                            SwapTiles(i , j, i - 1, j, true);
+                            return
+                        } else if(GameGrid[i + 1][j].Kind === GameGrid[i][j + 1].Kind){
+                            SwapTiles(i , j, i + 1, j, true);
+                            return 
+                        }
+                }
+            }
+        }
+        
+        for(let i = 0; i <= GAME_GRIDSIZE - 1; i++){
+            for (let j = 0; j <= GAME_GRIDSIZE - 1 ; j++){
+                if (i !== 0 && i !== GAME_GRIDSIZE - 1 &&                
+                    j  >  1 && j !== GAME_GRIDSIZE - 1 &&
+                    GameGrid[i][j].Kind !== UNDEF_KIND &&
+                    GameGrid[i][j].Kind !== BLOCK_KIND &&
+                    GameGrid[i][j - 1].Kind !== UNDEF_KIND &&
+                    GameGrid[i][j - 1].Kind !== BLOCK_KIND &&
+                    GameGrid[i][j - 2].Kind !== UNDEF_KIND &&
+                    GameGrid[i][j - 2].Kind !== BLOCK_KIND &&
+                    GameGrid[i][j - 1].Kind === GameGrid[i][j - 2].Kind){
+                        if(GameGrid[i][j + 1].Kind === GameGrid[i][j - 1].Kind){
+                            SwapTiles(i , j, i, j + 1, true);
+                            return
+                        }
+                }
+            }
+        }
+
+        for(let i = 0; i <= GAME_GRIDSIZE - 1; i++){
+            for (let j = 0; j <= GAME_GRIDSIZE - 1 ; j++){
+                if (i !== 0 && i !== GAME_GRIDSIZE - 1 &&                
+                    j !== 0 && j  <  GAME_GRIDSIZE - 2 &&
+                    GameGrid[i][j].Kind !== UNDEF_KIND &&
+                    GameGrid[i][j].Kind !== BLOCK_KIND &&
+                    GameGrid[i][j + 1].Kind !== UNDEF_KIND &&
+                    GameGrid[i][j + 1].Kind !== BLOCK_KIND &&
+                    GameGrid[i][j + 2].Kind !== UNDEF_KIND &&
+                    GameGrid[i][j + 2].Kind !== BLOCK_KIND &&
+                    GameGrid[i][j + 1].Kind === GameGrid[i][j + 2].Kind){
+                        if(GameGrid[i][j + 1].Kind === GameGrid[i][j - 1].Kind){
+                            SwapTiles(i , j, i, j - 1, true);
+                            return
+                        }
+                }
+            }
+        }
+        
+        for(let i = 0; i <= GAME_GRIDSIZE - 1; i++){
+            for (let j = 0; j <= GAME_GRIDSIZE - 1 ; j++){
+                if (i !== 0 && i  <  GAME_GRIDSIZE - 2 &&                
+                    j !== 0 && j !== GAME_GRIDSIZE - 1 &&
+                    GameGrid[i][j].Kind !== UNDEF_KIND &&
+                    GameGrid[i][j].Kind !== BLOCK_KIND &&
+                    GameGrid[i + 1][j].Kind !== UNDEF_KIND &&
+                    GameGrid[i + 1][j].Kind !== BLOCK_KIND &&
+                    GameGrid[i + 2][j].Kind !== UNDEF_KIND &&
+                    GameGrid[i + 2][j].Kind !== BLOCK_KIND &&
+                    GameGrid[i + 1][j].Kind === GameGrid[i + 2][j].Kind){
+                        if(GameGrid[i + 1][j].Kind === GameGrid[i - 1][j].Kind){
+                            SwapTiles(i , j, i - 1, j, true);
+                            return
+                        } else if (GameGrid[i + 1][j].Kind === GameGrid[i][j - 1].Kind ){
+                            SwapTiles(i, j, i, j - 1, true);
+                            return
+                        } else if (GameGrid[i + 1][j].Kind === GameGrid[i][j + 1].Kind ){
+                            SwapTiles(i, j, i, j + 1, true);
+                            return
+                        }
+                }
+            }
+        }
+        
+        for(let i = 0; i <= GAME_GRIDSIZE - 1; i++){
+            for (let j = 0; j <= GAME_GRIDSIZE - 1 ; j++){
+                if (i  >  1 && i !== GAME_GRIDSIZE - 1 &&                
+                    j !== 0 && j !== GAME_GRIDSIZE - 1 &&
+                    GameGrid[i][j].Kind !== UNDEF_KIND &&
+                    GameGrid[i][j].Kind !== BLOCK_KIND &&
+                    GameGrid[i - 1][j].Kind !== UNDEF_KIND &&
+                    GameGrid[i - 1][j].Kind !== BLOCK_KIND &&
+                    GameGrid[i - 2][j].Kind !== UNDEF_KIND &&
+                    GameGrid[i - 2][j].Kind !== BLOCK_KIND &&
+                    GameGrid[i - 1][j].Kind === GameGrid[i - 2][j].Kind){
+                        if(GameGrid[i + 1][j].Kind === GameGrid[i - 1][j].Kind){
+                            SwapTiles(i , j, i + 1, j, true);
+                            return
+                        } else if (GameGrid[i - 1][j].Kind === GameGrid[i][j - 1].Kind ){
+                            SwapTiles(i, j, i, j - 1, true);
+                            return
+                        } else if (GameGrid[i - 1][j].Kind === GameGrid[i][j + 1].Kind ){
+                            SwapTiles(i, j, i, j + 1, true);
+                            return
+                        }
+                }
+            }
+        }
+
+    }            
+}
+
+function AutoPlaySwitcher(){
+    if (IsAutoGame){
+        IsAutoGame = false;
+    } else {
+        IsAutoGame = true;
+    }
+}
 
 var TimerID = setInterval(function(){
     if (IsMenu){
@@ -607,6 +752,10 @@ var TimerID = setInterval(function(){
         } else {
             DrawMenu()
         }
+    }
+
+    if (IsAutoGame && !IsMenu && !IsMoving){
+        Help();
     }
 
     if (Timer){
